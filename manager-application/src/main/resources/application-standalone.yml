@@ -1,0 +1,33 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: manager-application
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuerUri: http://localhost:8082/realms/atum-security
+            userNameAttribute: preferred_username
+        registration:
+          keycloak:
+            clientId: manager-application
+            clientSecret: SEczgokowO1PXyJKydbBT2dKpoMQObqo
+            scope:
+              - openid
+              - microprofile-jwt
+              - view_catalogue
+              - edit_catalogue
+  datasource:
+    url: jdbc:postgresql://localhost:5433/products_catalogue_database
+    username: postgres
+    password: "!rT8v^Q2m#L5z@J9p*X3w&hF7"
+  flyway:
+    schemas:
+      - user_management
+catalogue:
+  service:
+    base:
+      uri: http://localhost:8080
+    registration-id: keycloak

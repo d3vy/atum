@@ -1,5 +1,7 @@
 package com.clothes.manager.config;
 
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -18,6 +20,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 @Configuration
+@Slf4j
 public class SecurityBeans {
 
     @Bean

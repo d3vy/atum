@@ -16,7 +16,7 @@ public class ClientBeans {
 
     @Bean
     public ProductsClientImpl productsClient(
-            @Value("${catalogue.service.base.uri:http://localhost:8080}") String catalogueBaseUri,
+            @Value("${catalogue.service.base.uri:http://catalogue-service:8080}") String catalogueBaseUri,
             @Value("${catalogue.service.registration-id:keycloak}") String registrationId,
             ClientRegistrationRepository clientRegistrationRepository,
             OAuth2AuthorizedClientRepository auth2AuthorizedClientRepository
@@ -34,7 +34,7 @@ public class ClientBeans {
 
     @Bean
     public ProductClientImpl productClient(
-            @Value("${catalogue.service.base.uri:http://localhost:8080}") String catalogueBaseUri,
+            @Value("${catalogue.service.base.uri:http://catalogue-service:8080}") String catalogueBaseUri,
             @Value("${catalogue.service.registration-id:keycloak}") String registrationId,
             ClientRegistrationRepository clientRegistrationRepository,
             OAuth2AuthorizedClientRepository auth2AuthorizedClientRepository

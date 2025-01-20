@@ -6,7 +6,8 @@
     <parent>
         <groupId>com.clothes</groupId>
         <artifactId>atum</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>25.1.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>manager-application</artifactId>

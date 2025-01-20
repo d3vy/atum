@@ -1,28 +1,33 @@
 server:
   port: 8080
+
 logging:
   level:
     sql: info
+
 spring:
   application:
     name: catalogue-service
+
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8082/realms/atum-security
+          issuer-uri: http://keycloak:8080/realms/atum
+
   datasource:
-    url: jdbc:postgresql://localhost:5433/products_catalogue_database
+    url: jdbc:postgresql://postgres:5432/products_catalogue_database
     username: postgres
     password: "!rT8v^Q2m#L5z@J9p*X3w&hF7"
+
   flyway:
     enabled: true
     baseline-on-migrate: true
     schemas:
       - public
       - catalogue
+
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: update
-

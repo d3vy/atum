@@ -12,6 +12,8 @@ import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
+import org.springframework.security.oauth2.core.OAuth2AuthorizationException;
+import org.springframework.security.oauth2.core.OAuth2Error;
 
 import java.io.IOException;
 
@@ -34,8 +36,12 @@ public class OAuthClientHttpRequestInterceptor implements ClientHttpRequestInter
                     OAuth2AuthorizeRequest.withClientRegistrationId(this.registrationId)
                             .principal(this.securityContextHolderStrategy.getContext().getAuthentication())
                             .build());
-            assert authorizedClient != null;
-            request.getHeaders().setBearerAuth(authorizedClient.getAccessToken().getTokenValue());
+            if (authorizedClient == null) {
+                throw new OAuth2AuthorizationException(new OAuth2Error("OAuth2 client authorization failed"));
+            } else {
+                String token = authorizedClient.getAccessToken().getTokenValue();
+                request.getHeaders().setBearerAuth(token);
+            }
         }
         return execution.execute(request, body);
     }

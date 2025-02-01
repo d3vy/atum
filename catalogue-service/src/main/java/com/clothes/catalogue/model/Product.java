@@ -3,8 +3,14 @@ package com.clothes.catalogue.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+/**
+ * Класс Product представляет сущность товара в каталоге.
+ */
 @Entity
 @Getter
 @Setter
@@ -13,16 +19,28 @@ import lombok.*;
 @Table(schema = "catalogue", name = "products")
 public class Product {
 
+    /**
+     * Уникальный идентификатор товара.
+     * Генерируется автоматически при вставке новой записи в таблицу.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column(nullable = false) // Поле не может быть null в базе данных
     private Integer id;
 
+    /**
+     * Название товара.
+     * Обязательно должно содержать от 3 до 50 символов.
+     */
     @NotNull
     @Size(min = 3, max = 50)
     @Column(nullable = false)
     private String title;
 
+    /**
+     * Описание товара.
+     * Обязательно должно содержать от 10 до 1000 символов.
+     */
     @NotNull
     @Size(min = 10, max = 1000)
     @Column(nullable = false)

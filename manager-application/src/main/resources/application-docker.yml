@@ -15,12 +15,14 @@ spring:
       client:
         provider:
           keycloak:
-            issuerUri: http://localhost:8082/realms/atum
+            issuerUri: http://keycloak:8080/realms/atum
             userNameAttribute: preferred_username
         registration:
           keycloak:
             clientId: manager-application
             clientSecret: EyPPKE2KC0WTFmLUby2ruW5UCLloZC8d
+            authorizationGrantType: authorization_code
+            redirect-uri: http://manager-application:8081/login/oauth2/code/keycloak
             scope:
               - openid
               - microprofile-jwt
@@ -28,7 +30,7 @@ spring:
               - edit_catalogue
 
   datasource:
-    url: jdbc:postgresql://localhost:5433/products_catalogue_database
+    url: jdbc:postgresql://postgres:5432/products_catalogue_database
     username: postgres
     password: "!rT8v^Q2m#L5z@J9p*X3w&hF7"
 
@@ -39,5 +41,5 @@ spring:
 catalogue:
   service:
     base:
-      uri: http://localhost:8080
+      uri: http://catalogue-service:8080
     registration-id: keycloak

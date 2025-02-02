@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <!-- Формирование заголовка страницы с использованием атрибута th:text -->
+    <title th:text="${product.title} + ' – Atum'">Product Title – Atum</title>
+</head>
+<body>
+<!-- Ссылка на список товаров -->
+<a th:href="@{/customer/products/list}">&larr; Back to products</a>
+
+<!-- Заголовок и описание товара -->
+<h1 th:text="${product.title}">Product Title</h1>
+<p th:text="${product.description}">Product description</p>
+
+<!-- Форма для добавления в избранное, отображается, если товар не в избранном -->
+<form method="post"
+      th:action="@{/customer/products/{productId}/add-to-favorites(productId=${product.id})}"
+      th:if="${!inFavorites}">
+    <button type="submit">add to favorites</button>
+</form>
+
+<!-- Форма для удаления из избранного, отображается, если товар в избранном -->
+<form method="post"
+      th:action="@{/customer/products/{productId}/remove-from-favorites(productId=${product.id})}"
+      th:if="${inFavorites}">
+    <button type="submit">remove from favorites</button>
+</form>
+
+<!-- Раздел отзывов -->
+<h2>Reviews</h2>
+<!-- Если имеются ошибки, они отображаются здесь -->
+<div th:if="${errors}">
+    <h1>There are some errors</h1>
+    <ul>
+        <li th:each="error : ${errors}" th:text="${error}"></li>
+    </ul>
+</div>
+
+<!-- Форма для создания нового отзыва -->
+<form method="post"
+      th:action="@{/customer/products/{productId}/create-review(productId=${product.id})}">
+    <label><input type="radio" name="rating" value="1">1</label>
+    <label><input type="radio" name="rating" value="2">2</label>
+    <label><input type="radio" name="rating" value="3">3</label>
+    <label><input type="radio" name="rating" value="4">4</label>
+    <label><input type="radio" name="rating" value="5">5</label>
+    <br>
+    <label>
+        Review:<br>
+        <!-- Если в payload есть отзыв, он будет отображён в textarea -->
+        <textarea name="review" th:text="${payload?.review}"></textarea>
+    </label><br>
+    <button type="submit">Submit review</button>
+</form>
+
+<!-- Вывод списка отзывов -->
+<div th:each="review : ${reviews}">
+    <h3 th:text="${review.rating}">Rating</h3>
+    <p th:text="${review.review}">Review text</p>
+</div>
+</body>
+</html>

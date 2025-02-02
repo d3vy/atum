@@ -1,0 +1,29 @@
+server:
+  port: 8084
+spring:
+  application:
+    name: customer-application
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuerUri: http://localhost:8082/realms/atum
+            userNameAttribute: preferred_username
+        registration:
+          keycloak:
+            clientId: customer-application
+            clientSecret: 1gaU2P582s1NSl0SRNAtYeDX6ZB9nDvO
+            authorizationGrantType: authorization_code
+            scope:
+              - openid
+              - microprofile-jwt
+              - view_catalogue
+atum:
+  services:
+    catalogue:
+      uri: http://localhost:8080
+    feedback:
+      uri: http://localhost:8083
+    reviews:
+      uri: http://localhost:8083

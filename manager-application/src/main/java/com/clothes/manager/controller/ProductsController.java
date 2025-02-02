@@ -4,7 +4,6 @@ import com.clothes.manager.client.general.ProductsClient;
 import com.clothes.manager.controller.payload.NewProductPayload;
 import com.clothes.manager.dto.Product;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

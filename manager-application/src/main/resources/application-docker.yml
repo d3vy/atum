@@ -22,7 +22,6 @@ spring:
             clientId: manager-application
             clientSecret: EyPPKE2KC0WTFmLUby2ruW5UCLloZC8d
             authorizationGrantType: authorization_code
-            redirect-uri: http://manager-application:8081/login/oauth2/code/keycloak
             scope:
               - openid
               - microprofile-jwt

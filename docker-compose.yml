@@ -8,6 +8,7 @@ services:
     ports:
       - "5434:5432"
     environment:
+      SPRING_PROFILES_ACTIVE: docker
       POSTGRES_DB: products_catalogue_database
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: "!rT8v^Q2m#L5z@J9p*X3w&hF7"
@@ -16,19 +17,35 @@ services:
     networks:
       - atum-network
 
+  # MongoDB
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - atum-network
+
+
   # Keycloak
   keycloak:
     image: quay.io/keycloak/keycloak:25.0.2
     container_name: keycloak
     environment:
+      SPRING_PROFILES_ACTIVE: docker
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
-      KC_DB: postgres
-      KC_DB_URL_HOST: postgres
-      KC_DB_URL_PORT: 5432
-      KC_DB_URL: jdbc:postgresql://postgres:5432/products_catalogue_database
-      KC_DB_USERNAME: postgres
-      KC_DB_PASSWORD: "!rT8v^Q2m#L5z@J9p*X3w&hF7"
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_PORT: 8082
+      KC_HOSTNAME_STRICT: false
+      KC_HOSTNAME_STRICT_HTTPS: false
+      KC_PROXY: edge
     ports:
       - "8082:8080"
     volumes:
@@ -46,6 +63,7 @@ services:
     ports:
       - "8080:8080"
     environment:
+      SPRING_PROFILES_ACTIVE: docker
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/products_catalogue_database
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: "!rT8v^Q2m#L5z@J9p*X3w&hF7"
@@ -62,10 +80,37 @@ services:
     ports:
       - "8081:8081"
     environment:
+      SPRING_PROFILES_ACTIVE: docker
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/products_catalogue_database
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: "!rT8v^Q2m#L5z@J9p*X3w&hF7"
       DB_SCHEMA: user_management
+    networks:
+      - atum-network
+
+  # Feedback Service
+  feedback-service:
+    build:
+      context: ./feedback-service
+      dockerfile: Dockerfile
+    container_name: feedback-service
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    ports:
+      - "8083:8083"
+    networks:
+      - atum-network
+
+  # Customer Application
+  customer-application:
+    build:
+      context: ./customer-application
+      dockerfile: Dockerfile
+    container_name: customer-application
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    ports:
+      - "8084:8084"
     networks:
       - atum-network
 
@@ -75,3 +120,4 @@ networks:
 
 volumes:
   postgres_data:
+  mongo-data:

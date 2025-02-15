@@ -320,6 +320,7 @@
       "manager-application": [],
       "security-admin-console": [],
       "admin-cli": [],
+      "customer-application": [],
       "account-console": [],
       "broker": [
         {
@@ -497,6 +498,22 @@
   "webAuthnPolicyPasswordlessAcceptableAaguids": [],
   "webAuthnPolicyPasswordlessExtraOrigins": [],
   "users": [
+    {
+      "id": "fafda8fe-cef1-4024-bdef-3755bf5eea4e",
+      "username": "service-account-customer-application",
+      "emailVerified": false,
+      "createdTimestamp": 1738424091800,
+      "enabled": true,
+      "totp": false,
+      "serviceAccountClientId": "customer-application",
+      "disableableCredentialTypes": [],
+      "requiredActions": [],
+      "realmRoles": [
+        "default-roles-atum"
+      ],
+      "notBefore": 0,
+      "groups": []
+    },
     {
       "id": "666b8ee0-f934-4830-bd8c-7f7a089e7258",
       "username": "service-account-manager-application",
@@ -710,6 +727,109 @@
         "address",
         "phone",
         "offline_access",
+        "microprofile-jwt"
+      ]
+    },
+    {
+      "id": "f2aa7c4e-2aa7-4725-bcc7-1bf404f744c1",
+      "clientId": "customer-application",
+      "name": "",
+      "description": "",
+      "rootUrl": "http://localhost:8084",
+      "adminUrl": "http://localhost:8084",
+      "baseUrl": "",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "**********",
+      "redirectUris": [
+        "http://localhost:8084/*"
+      ],
+      "webOrigins": [
+        "http://localhost:8084"
+      ],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true,
+      "publicClient": false,
+      "frontchannelLogout": true,
+      "protocol": "openid-connect",
+      "attributes": {
+        "oidc.ciba.grant.enabled": "false",
+        "client.secret.creation.time": "1738424091",
+        "backchannel.logout.session.required": "true",
+        "oauth2.device.authorization.grant.enabled": "false",
+        "backchannel.logout.revoke.offline.tokens": "false"
+      },
+      "authenticationFlowBindingOverrides": {},
+      "fullScopeAllowed": true,
+      "nodeReRegistrationTimeout": -1,
+      "protocolMappers": [
+        {
+          "id": "61822ad2-5e3b-4e00-b00c-d41ac9c4d232",
+          "name": "Client ID",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "client_id",
+            "id.token.claim": "true",
+            "introspection.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "client_id",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "8ac08b29-87b1-4595-a217-ee6fcacdeee2",
+          "name": "Client Host",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "clientHost",
+            "id.token.claim": "true",
+            "introspection.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "clientHost",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "2368acbf-f8bc-4a8d-90a7-356541fa4d54",
+          "name": "Client IP Address",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "clientAddress",
+            "id.token.claim": "true",
+            "introspection.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "clientAddress",
+            "jsonType.label": "String"
+          }
+        }
+      ],
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "profile",
+        "roles",
+        "basic",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "edit_catalogue",
+        "address",
+        "phone",
+        "offline_access",
+        "view_catalogue",
         "microprofile-jwt"
       ]
     },

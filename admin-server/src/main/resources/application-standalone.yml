@@ -1,0 +1,17 @@
+server:
+  port: 8085
+
+spring:
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuerUri: http://localhost:8082/realms/atum
+        registration:
+          keycloak:
+            authorizationGrantType: client_credentials
+            clientId: admin-server
+            clientSecret: Xh6RPIBbr4bGiVkdtDFhIoSmxCob1XrD
+            scope:
+              - metrics

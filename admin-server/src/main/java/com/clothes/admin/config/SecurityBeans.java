@@ -5,6 +5,7 @@ import jakarta.annotation.Priority;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
@@ -21,15 +22,18 @@ public class SecurityBeans {
 
     @Bean
     @Priority(0)
-    // Для проверки клиентов, которые обращаются к этому серверу
     public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .securityMatcher(request -> Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION))
-                        .map(header -> header.startsWith("Bearer ")).orElse(false))
-                .authorizeHttpRequests(request -> request
-                        .anyRequest().hasAuthority("SCOPE_metrics_server"))
+                .securityMatchers(customizer -> customizer
+                        .requestMatchers(HttpMethod.POST, "/instances")
+                        .requestMatchers(HttpMethod.DELETE, "/instances/*")
+                        .requestMatchers("/actuator/**"))
                 .oauth2ResourceServer(customizer -> customizer.jwt(Customizer.withDefaults()))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(customizer -> customizer.requestMatchers("/instances", "/instances/*")
+                        .hasAuthority("SCOPE_metrics_server")
+                        .requestMatchers("/actuator/**").hasAuthority("SCOPE_metrics")
+                        .anyRequest().denyAll())
+                .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(CsrfConfigurer::disable)
                 .build();
     }

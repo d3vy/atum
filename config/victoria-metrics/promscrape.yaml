@@ -1,0 +1,13 @@
+scrape_configs:
+  - job_name: atum_admin_server
+    static_configs:
+      - targets: ["http://localhost:8085"]
+    metrics_path: /actuator/prometheus
+    oauth2:
+      client_id: victoria-metrics
+      client_secret: xymoDoy8VCergShhgpRf1MTSFgdpQXzb
+      token_url: http://localhost:8082/realms/atum/protocol/openid-connect/token
+      endpoint_params:
+        grant_type: client_credential
+      scopes:
+        - metrics

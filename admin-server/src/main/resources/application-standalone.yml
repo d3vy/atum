@@ -15,3 +15,14 @@ spring:
             clientSecret: Xh6RPIBbr4bGiVkdtDFhIoSmxCob1XrD
             scope:
               - metrics
+          login:
+            provider: keycloak
+            clientId: admin-server
+            clientSecret: Xh6RPIBbr4bGiVkdtDFhIoSmxCob1XrD
+            scope:
+              - openid
+              - metrics
+
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8082/realms/atum

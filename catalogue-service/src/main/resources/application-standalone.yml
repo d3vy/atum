@@ -20,6 +20,18 @@ spring:
 
   security:
     oauth2:
+      client:
+        provider:
+          keycloak:
+            issuerUri: http://localhost:8082/realms/atum
+        registration:
+          keycloak:
+            authorizationGrantType: client_credentials
+            client-id: catalogue-service-metrics-client
+            client-secret: u34hkHPpwGWwx29mYcVr6g2BgySEQGts
+            scope:
+              - metrics_server
+
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8082/realms/atum

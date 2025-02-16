@@ -34,6 +34,7 @@ public class SecurityBeans {
                 .csrf(CsrfConfigurer::disable)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .oauth2Client(Customizer.withDefaults())
                 .oauth2ResourceServer(oauth2ResourceServer -> oauth2ResourceServer
                         .jwt(Customizer.withDefaults()))
                 .build();

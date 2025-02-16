@@ -31,3 +31,12 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+
+springdoc:
+  swagger-ui:
+    oauth:
+      client-id: catalogue-service-swagger-ui
+      use-pkce-with-authorization-code-grant: true
+
+keycloak:
+  uri: http://localhost:8082

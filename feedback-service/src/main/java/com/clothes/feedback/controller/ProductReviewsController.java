@@ -3,6 +3,10 @@ package com.clothes.feedback.controller;
 import com.clothes.feedback.controller.payload.NewProductReviewPayload;
 import com.clothes.feedback.model.ProductReview;
 import com.clothes.feedback.service.general.ProductReviewsService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +26,9 @@ public class ProductReviewsController {
     private final ProductReviewsService productReviewsService;
 
     @GetMapping("by-product-id/{productId:\\d+}")
+    @Operation(
+            security = @SecurityRequirement(name = "keycloak")
+    )
     public Flux<ProductReview> findProductReviewsByProductId(
             @PathVariable("productId") Integer productId) {
         return this.productReviewsService.findProductReviewsByProductId(productId);

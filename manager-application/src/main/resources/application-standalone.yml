@@ -10,6 +10,16 @@ spring:
   application:
     name: manager-application
 
+  boot:
+    admin:
+      client:
+        enabled: true
+        instance:
+          name: manager-application
+          service-host-type: ip
+        url: http://localhost:8085
+
+
   security:
     oauth2:
       client:
@@ -26,6 +36,16 @@ spring:
               - microprofile-jwt
               - view_catalogue
               - edit_catalogue
+          metrics:
+            provider: keycloak
+            authorizationGrantType: client_credentials
+            clientId: manager-application-metrics-client
+            clientSecret: iYMiAQyonRMMBIv5UEpLBvbYDJyHSpHg
+            scope:
+              - metrics_server
+      resourceserver:
+        jwt:
+          issuerUri: http://localhost:8082/realms/atum
 
   datasource:
     url: jdbc:postgresql://localhost:5433/products_catalogue_database
@@ -41,3 +61,15 @@ catalogue:
     base:
       uri: http://localhost:8080
     registration-id: keycloak
+
+
+management:
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"

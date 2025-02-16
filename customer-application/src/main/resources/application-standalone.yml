@@ -1,8 +1,20 @@
 server:
   port: 8084
+
 spring:
+
   application:
     name: customer-application
+
+  boot:
+    admin:
+      client:
+        enabled: true
+        instance:
+          name: customer-application
+          service-host-type: ip
+        url: http://localhost:8085
+
   security:
     oauth2:
       client:
@@ -19,6 +31,17 @@ spring:
               - openid
               - microprofile-jwt
               - view_catalogue
+          metrics:
+            provider: keycloak
+            authorizationGrantType: client_credentials
+            clientId: customer-application-metrics-client
+            clientSecret: jrGLZAkIEUn5zv5c2IiHl987pbwmZzpd
+            scope:
+              - metrics_server
+
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8082/realms/atum
 atum:
   services:
     catalogue:
@@ -27,3 +50,14 @@ atum:
       uri: http://localhost:8083
     reviews:
       uri: http://localhost:8083
+
+management:
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'

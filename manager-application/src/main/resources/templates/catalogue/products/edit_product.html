@@ -2,27 +2,37 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Edit Product &laquo;[[${product.title}]]&laquo; &ndash; Clothing Store</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Product &laquo;[[${product.title}]]&raquo; &ndash; Clothing Store</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-<a data-th-href="@{/catalogue/products/{productId}(productId=${product.id})}">&larr;Product</a>
-<h1>Edit Product &laquo;[[${product.title}]]&laquo;</h1>
-<div data-th-if="${errors}">
-  <h2>There are some errors</h2>
-  <ul>
-    <li data-th-each="error: ${errors}" data-th-text="${error}"></li>
-  </ul>
+<body class="bg-gray-100 p-6">
+<div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-6">
+  <a data-th-href="@{/catalogue/products/{productId}(productId=${product.id})}" class="text-blue-500 hover:underline">&larr; Product</a>
+  <h1 class="text-2xl font-bold mt-4 mb-6">Edit Product &laquo;[[${product.title}]]&raquo;</h1>
+
+  <div data-th-if="${errors}" class="mb-4 p-4 bg-red-100 border border-red-300 rounded">
+    <h2 class="text-red-600 font-semibold">There are some errors</h2>
+    <ul class="list-disc list-inside text-red-500">
+      <li data-th-each="error: ${errors}" data-th-text="${error}"></li>
+    </ul>
+  </div>
+
+  <form method="post" data-th-action="@{/catalogue/products/{productId}/edit_product(productId=${product.id})}" class="space-y-4">
+    <label class="block">
+      <span class="text-gray-700">Title:</span>
+      <input type="text" name="title" data-th-value="${payload != null ? payload.title : product.title}"
+             class="border border-gray-300 rounded p-2 w-full">
+    </label>
+
+    <label class="block">
+      <span class="text-gray-700">Description:</span>
+      <textarea name="description" data-th-text="${payload != null ? payload.description : product.description}"
+                class="border border-gray-300 rounded p-2 w-full"></textarea>
+    </label>
+
+    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Edit</button>
+  </form>
 </div>
-<form method="post" data-th-action="@{/catalogue/products/{productId}/edit_product(productId=${product.id})}">
-  <label>
-    Title:<br>
-    <input type="text" name="title" data-th-value="${payload != null ? payload.title : product.title}">
-  </label><br>
-  <label>
-    Description:<br>
-    <textarea name="description" data-th-text="${payload != null ? payload.description : product.description}"></textarea>
-  </label><br>
-  <button type="submit">Edit</button>
-</form>
 </body>
 </html>

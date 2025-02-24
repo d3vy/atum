@@ -2,62 +2,59 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <!-- Формирование заголовка страницы с использованием атрибута th:text -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${product.title} + ' – Atum'">Product Title – Atum</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-<!-- Ссылка на список товаров -->
-<a th:href="@{/customer/products/list}">&larr; Back to products</a>
+<body class="bg-gray-100 p-6">
+<div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-6">
+    <a th:href="@{/customer/products/list}" class="text-blue-500 hover:underline">&larr; Back to products</a>
 
-<!-- Заголовок и описание товара -->
-<h1 th:text="${product.title}">Product Title</h1>
-<p th:text="${product.description}">Product description</p>
+    <h1 th:text="${product.title}" class="text-2xl font-bold mt-4 mb-2">Product Title</h1>
+    <p th:text="${product.description}" class="text-gray-700">Product description</p>
 
-<!-- Форма для добавления в избранное, отображается, если товар не в избранном -->
-<form method="post"
-      th:action="@{/customer/products/{productId}/add-to-favorites(productId=${product.id})}"
-      th:if="${!inFavorites}">
-    <button type="submit">add to favorites</button>
-</form>
+    <div class="mt-4">
+        <form method="post"
+              th:action="@{/customer/products/{productId}/add-to-favorites(productId=${product.id})}"
+              th:if="${!inFavorites}">
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Add to favorites</button>
+        </form>
 
-<!-- Форма для удаления из избранного, отображается, если товар в избранном -->
-<form method="post"
-      th:action="@{/customer/products/{productId}/remove-from-favorites(productId=${product.id})}"
-      th:if="${inFavorites}">
-    <button type="submit">remove from favorites</button>
-</form>
+        <form method="post"
+              th:action="@{/customer/products/{productId}/remove-from-favorites(productId=${product.id})}"
+              th:if="${inFavorites}">
+            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Remove from favorites</button>
+        </form>
+    </div>
 
-<!-- Раздел отзывов -->
-<h2>Reviews</h2>
-<!-- Если имеются ошибки, они отображаются здесь -->
-<div th:if="${errors}">
-    <h1>There are some errors</h1>
-    <ul>
-        <li th:each="error : ${errors}" th:text="${error}"></li>
-    </ul>
-</div>
+    <h2 class="text-xl font-semibold mt-6">Reviews</h2>
+    <div th:if="${errors}" class="bg-red-100 p-4 rounded mt-2">
+        <h1 class="text-red-600 font-bold">There are some errors</h1>
+        <ul class="list-disc pl-6">
+            <li th:each="error : ${errors}" th:text="${error}" class="text-red-500"></li>
+        </ul>
+    </div>
 
-<!-- Форма для создания нового отзыва -->
-<form method="post"
-      th:action="@{/customer/products/{productId}/create-review(productId=${product.id})}">
-    <label><input type="radio" name="rating" value="1">1</label>
-    <label><input type="radio" name="rating" value="2">2</label>
-    <label><input type="radio" name="rating" value="3">3</label>
-    <label><input type="radio" name="rating" value="4">4</label>
-    <label><input type="radio" name="rating" value="5">5</label>
-    <br>
-    <label>
-        Review:<br>
-        <!-- Если в payload есть отзыв, он будет отображён в textarea -->
-        <textarea name="review" th:text="${payload?.review}"></textarea>
-    </label><br>
-    <button type="submit">Submit review</button>
-</form>
+    <form method="post" class="mt-4 bg-gray-50 p-4 rounded shadow"
+          th:action="@{/customer/products/{productId}/create-review(productId=${product.id})}">
+        <div class="flex space-x-2">
+            <label><input type="radio" name="rating" value="1">1</label>
+            <label><input type="radio" name="rating" value="2">2</label>
+            <label><input type="radio" name="rating" value="3">3</label>
+            <label><input type="radio" name="rating" value="4">4</label>
+            <label><input type="radio" name="rating" value="5">5</label>
+        </div>
+        <label class="block mt-2">
+            Review:
+            <textarea name="review" th:text="${payload?.review}" class="w-full p-2 border rounded"></textarea>
+        </label>
+        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded mt-2">Submit review</button>
+    </form>
 
-<!-- Вывод списка отзывов -->
-<div th:each="review : ${reviews}">
-    <h3 th:text="${review.rating}">Rating</h3>
-    <p th:text="${review.review}">Review text</p>
+    <div th:each="review : ${reviews}" class="mt-4 p-4 bg-gray-50 border rounded shadow">
+        <h3 th:text="${review.rating}" class="text-lg font-semibold">Rating</h3>
+        <p th:text="${review.review}" class="text-gray-700">Review text</p>
+    </div>
 </div>
 </body>
 </html>

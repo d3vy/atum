@@ -2,32 +2,41 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product List &ndash; ATUM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-<a data-th-href="@{/catalogue/products/create_new_product}">&larr;Create New Product</a>
-<h1>Product List</h1>
-<form method="get" data-th-action="@{/catalogue/products/list}">
-    <label>Filter:<input type="text" name="filter" data-th-value="${filter}">
-        <button type="submit">Search</button>
-    </label>
-</form>
-<table>
-    <thead>
-    <tr>
-        <th>#</th>
-        <th>Product</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr data-th-each="product : ${products}">
-        <td data-th-text="${product.id}"></td>
-        <td>
-            <a data-th-href="@{/catalogue/products/{productId}(productId=${product.id})}"
-               data-th-text="${product.title}"></a>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<body class="bg-gray-100 p-6">
+<div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-6">
+    <a data-th-href="@{/catalogue/products/create_new_product}" class="text-blue-500 hover:underline">&larr; Create New Product</a>
+    <h1 class="text-2xl font-bold mt-4 mb-6">Product List</h1>
+
+    <form method="get" data-th-action="@{/catalogue/products/list}" class="mb-4 flex gap-2">
+        <label>
+            <input type="text" name="filter" data-th-value="${filter}"
+                   class="border border-gray-300 rounded p-2 w-full" placeholder="Search products...">
+        </label>
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Search</button>
+    </form>
+
+    <table class="w-full border-collapse border border-gray-300">
+        <thead>
+        <tr class="bg-gray-200">
+            <th class="border border-gray-300 px-4 py-2">#</th>
+            <th class="border border-gray-300 px-4 py-2">Product</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-th-each="product : ${products}" class="odd:bg-white even:bg-gray-100">
+            <td data-th-text="${product.id}" class="border border-gray-300 px-4 py-2 text-center"></td>
+            <td class="border border-gray-300 px-4 py-2">
+                <a data-th-href="@{/catalogue/products/{productId}(productId=${product.id})}"
+                   data-th-text="${product.title}"
+                   class="text-blue-600 hover:underline"></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

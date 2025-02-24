@@ -2,19 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>[[${product.title}]] &ndash; ATUM</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-<a data-th-href="@{/catalogue/products/list}">&larr; Products List</a>
-<h1 data-th-text="${product.title}"></h1>
-<ul>
-  <li><strong>ID</strong>: <span data-th-text="${product.id}"></span></li>
-  <li><strong>Title</strong>: <span data-th-text="${product.title}"></span></li>
-  <li><strong>Description</strong>: <span data-th-text="${product.description}"></span></li>
-</ul>
-<a data-th-href="@{/catalogue/products/{productId}/edit_product(productId=${product.id})}">Edit</a>
-<form method="post" data-th-action="@{/catalogue/products/{productId}/delete_product(productId=${product.id})}">
-  <button type="submit">Delete</button>
-</form>
+<body class="bg-gray-100 p-6">
+<div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-6">
+  <a data-th-href="@{/catalogue/products/list}" class="text-blue-500 hover:underline">&larr; Products List</a>
+  <h1 data-th-text="${product.title}" class="text-2xl font-bold mt-4 mb-6"></h1>
+
+  <ul class="list-disc list-inside bg-gray-50 p-4 rounded border border-gray-300">
+    <li><strong>ID:</strong> <span data-th-text="${product.id}"></span></li>
+    <li><strong>Title:</strong> <span data-th-text="${product.title}"></span></li>
+    <li><strong>Description:</strong> <span data-th-text="${product.description}"></span></li>
+  </ul>
+
+  <div class="mt-4 flex space-x-2">
+    <a data-th-href="@{/catalogue/products/{productId}/edit_product(productId=${product.id})}"
+       class="bg-blue-500 text-white px-4 py-2 rounded">Edit</a>
+    <form method="post" data-th-action="@{/catalogue/products/{productId}/delete_product(productId=${product.id})}">
+      <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Delete</button>
+    </form>
+  </div>
+</div>
 </body>
 </html>

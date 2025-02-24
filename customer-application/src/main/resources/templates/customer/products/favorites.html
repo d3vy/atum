@@ -2,23 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Favorite Products &dash; Atum</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Favorite Products &ndash; Atum</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-<a data-th-href="@{/customer/products/list}">&larr; Back to products</a>
-<h1>Favorite Products</h1>
-<form>
-  <label>Filter:<input type="text" name="filter" data-th-value="${filter}"></label>
-  <button type="submit">Search</button>
-</form>
-<ul>
-  <li data-th-each="product : ${products}">
-    <strong>
-      <a data-th-text="${product.title}"
-         data-th-href="@{/customer/products/{productId}(productId=${product.id})}"></a>
-    </strong>
-    <p data-th-text="${product.description}"></p>
-  </li>
-</ul>
+<body class="bg-gray-100 p-6">
+<div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-6">
+  <a data-th-href="@{/customer/products/list}" class="text-blue-500 hover:underline">&larr; Back to products</a>
+  <h1 class="text-2xl font-bold mt-4 mb-6">Favorite Products</h1>
+
+  <form class="mb-4 flex space-x-2">
+    <label>
+      <input type="text" name="filter" data-th-value="${filter}"
+             class="border border-gray-300 rounded p-2 w-full" placeholder="Search favorites...">
+    </label>
+    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Search</button>
+  </form>
+
+  <ul class="space-y-4">
+    <li data-th-each="product : ${products}" class="p-4 bg-gray-50 rounded border border-gray-300">
+      <strong>
+        <a data-th-text="${product.title}"
+           data-th-href="@{/customer/products/{productId}(productId=${product.id})}"
+           class="text-lg text-blue-500 hover:underline"></a>
+      </strong>
+      <p data-th-text="${product.description}" class="text-gray-700"></p>
+    </li>
+  </ul>
+</div>
 </body>
 </html>

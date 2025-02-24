@@ -2,27 +2,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Crate New Product &ndash; ATUM</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Product &ndash; ATUM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-<a data-th-href="@{/catalogue/products/list}">&larr; Products List</a>
-<h1>New Product</h1>
-<div data-th-if="${errors}">
-    <h2>There are some errors</h2>
-    <ul>
-        <li data-th-each="error: ${errors}" data-th-text="${error}"></li>
-    </ul>
+<body class="bg-gray-100 p-6">
+<div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-6">
+    <a data-th-href="@{/catalogue/products/list}" class="text-blue-500 hover:underline">&larr; Products List</a>
+    <h1 class="text-2xl font-bold mt-4 mb-6">New Product</h1>
+
+    <div data-th-if="${errors}" class="mb-4 p-4 bg-red-100 border border-red-300 rounded">
+        <h2 class="text-red-600 font-semibold">There are some errors</h2>
+        <ul class="list-disc list-inside text-red-500">
+            <li data-th-each="error: ${errors}" data-th-text="${error}"></li>
+        </ul>
+    </div>
+
+    <form method="post" data-th-action="@{/catalogue/products/create_new_product}" class="space-y-4">
+        <label class="block">
+            <span class="text-gray-700">Title:</span>
+            <input type="text" name="title" data-th-value="${payload?.title}"
+                   class="border border-gray-300 rounded p-2 w-full">
+        </label>
+
+        <label class="block">
+            <span class="text-gray-700">Description:</span>
+            <textarea name="description" data-th-text="${payload?.description}"
+                      class="border border-gray-300 rounded p-2 w-full"></textarea>
+        </label>
+
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Create</button>
+    </form>
 </div>
-<form method="post" data-th-action="@{/catalogue/products/create_new_product}">
-    <label>
-        Title:<br>
-        <input type="text" name="title" data-th-value="${payload?.title}">
-    </label><br>
-    <label>
-        Description:<br>
-        <textarea name="description" data-th-text="${payload?.description}"></textarea>
-    </label><br>
-    <button type="submit">Create</button>
-</form>
 </body>
 </html>

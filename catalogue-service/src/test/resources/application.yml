@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:tc:postgresql:16:///atum?TC_DAEMON=true
+    username: atum
+    password: atum
+  boot:
+    admin:
+      client:
+        enabled: false
+        instance:
+          service-base-url: http://localhost:8080

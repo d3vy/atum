@@ -1,17 +1,61 @@
 server:
   port: 8083
+
 spring:
+
   application:
     name: feedback-service
+
+  boot:
+    admin:
+      client:
+        enabled: true
+        url: http://admin-server:8085
+        instance:
+          service-host-type: ip
+
   data:
     mongodb:
       uri: mongodb://mongodb:27017/feedback-service-database
+
   security:
     oauth2:
+      client:
+        provider:
+          keycloak:
+            issuerUri: http://keycloak:8080/realms/atum
+        registration:
+          keycloak:
+            authorizationGrantType: client_credentials
+            client-id: feedback-service-metrics-client
+            client-secret: 2s0iVksCTI7VvYJBZo2Y4aHiuvtCgJFx
+            scope:
+              - metrics_server
       resourceserver:
         jwt:
           issuer-uri: http://keycloak:8080/realms/atum
+
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+springdoc:
+  swagger-ui:
+    oauth:
+      client-id: feedback-service-swagger-ui
+      use-pkce-with-authorization-code-grant: true
+
+keycloak:
+  uri: http://keycloak:8080
+
+management:
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"

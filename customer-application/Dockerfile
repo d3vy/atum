@@ -12,6 +12,5 @@ ENV APP_PORT=8084
 
 EXPOSE ${APP_PORT}
 
-
 # Команда для запуска приложения
 CMD ["java", "-jar", "customer-application.jar"]

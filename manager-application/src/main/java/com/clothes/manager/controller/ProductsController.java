@@ -3,6 +3,7 @@ package com.clothes.manager.controller;
 import com.clothes.manager.client.general.ProductsClient;
 import com.clothes.manager.controller.payload.NewProductPayload;
 import com.clothes.manager.dto.Product;
+import com.clothes.manager.exception.error.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -57,8 +58,14 @@ public class ProductsController {
     @PostMapping("create_new_product")
     public String createNewProduct(NewProductPayload payload,
                                    Model model) {
-        Product product =
-                this.productClient.createProduct(payload.title(), payload.description());
-        return "redirect:/catalogue/products/%d".formatted(product.id());
+        try {
+            Product product =
+                    this.productClient.createProduct(payload.title(), payload.description());
+            return "redirect:/catalogue/products/%d".formatted(product.id());
+        } catch (BadRequestException exception) {
+            model.addAttribute("payload", payload);
+            model.addAttribute("errors", exception.getErrors());
+            return "catalogue/products/create_new_product";
+        }
     }
 }

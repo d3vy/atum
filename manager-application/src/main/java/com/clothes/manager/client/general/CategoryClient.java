@@ -3,7 +3,6 @@ package com.clothes.manager.client.general;
 import com.clothes.manager.dto.Category;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface CategoryClient {
 

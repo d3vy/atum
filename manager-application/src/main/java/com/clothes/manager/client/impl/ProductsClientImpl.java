@@ -34,7 +34,8 @@ public class ProductsClientImpl implements ProductsClient {
                 .get()
                 .uri("/api/v1/catalogue/products?filter={filter}", filter)
                 .retrieve()
-                .body(new ParameterizedTypeReference<List<Product>>() {});
+                .body(new ParameterizedTypeReference<>() {
+                });
     }
 
     /**

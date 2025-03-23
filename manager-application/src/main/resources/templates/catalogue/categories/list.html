@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categories &ndash; Clothing Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+<div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-6">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold">Categories</h1>
+        <a href="/catalogue/categories/create_new_category"
+           class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            + Add Category
+        </a>
+    </div>
+    <table class="w-full border-collapse border border-gray-300">
+        <thead>
+        <tr class="bg-gray-200">
+            <th class="border border-gray-300 px-4 py-2">#</th>
+            <th class="border border-gray-300 px-4 py-2">Category</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-th-each="category : ${categories}" class="odd:bg-white even:bg-gray-100">
+            <td data-th-text="${category.id}" class="border border-gray-300 px-4 py-2 text-center"></td>
+            <td class="border border-gray-300 px-4 py-2">
+                <a data-th-href="@{/catalogue/categories/{categoryId}(categoryId=${category.id})}"
+                   data-th-text="${category.title}"
+                   class="text-blue-600 hover:underline"></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

@@ -1,26 +1,27 @@
 package com.clothes.manager.controller;
 
-import com.clothes.manager.client.general.CategoryClient;
+import com.clothes.manager.client.general.CategoriesClient;
 import com.clothes.manager.controller.payload.NewCategoryPayload;
-import com.clothes.manager.dto.Category;
 import com.clothes.manager.exception.error.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("catalogue/categories")
 public class CategoriesController {
 
-    private final CategoryClient categoryClient;
+    private final CategoriesClient categoriesClient;
 
     @GetMapping("list")
-    public String getRootCategories(Model model) {
-        model.addAttribute("categories", categoryClient.getRootCategories());
+    public String getAllCategories(
+            Model model,
+            @RequestParam(value = "filter", required = false) String filter
+    ) {
+        model.addAttribute("categories", this.categoriesClient.getAllCategories(filter));
+        model.addAttribute("filter", filter);
         return "catalogue/categories/list";
     }
 
@@ -31,12 +32,13 @@ public class CategoriesController {
 
     @PostMapping("create_new_category")
     public String createNewCategory(
-            NewCategoryPayload payload,
-            Model model) {
+            Model model,
+            @ModelAttribute NewCategoryPayload payload
+    ) {
         try {
-            Category category =
-                    this.categoryClient.createCategory(payload.title(), payload.parentTitle());
-            return "redirect:/catalogue/categories/%d".formatted(category.id());
+            var categoryResponse = this.categoriesClient.createCategory(payload);
+            model.addAttribute("category", categoryResponse);
+            return "redirect:/catalogue/categories/%s".formatted(categoryResponse.id());
         } catch (BadRequestException exception) {
             model.addAttribute("payload", payload);
             model.addAttribute("errors", exception.getErrors());

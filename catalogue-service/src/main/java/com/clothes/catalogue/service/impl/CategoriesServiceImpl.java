@@ -37,10 +37,17 @@ public class CategoriesServiceImpl implements CategoriesService {
     }
 
     @Override
-    public List<CategoryResponse> getAllCategories() {
-        return this.categoryRepository.findAll().stream()
-                .map(this::toResponse)
-                .collect(Collectors.toList());
+    public List<CategoryResponse> getAllCategories(String filter) {
+
+        if (filter != null && !filter.isBlank()) {
+            return this.categoryRepository.findAllByTitleLikeIgnoreCase("%" + filter + "%").stream()
+                    .map(this::toResponse)
+                    .collect(Collectors.toList());
+        } else {
+            return this.categoryRepository.findAll().stream()
+                    .map(this::toResponse)
+                    .collect(Collectors.toList());
+        }
     }
 
     @Override

@@ -23,8 +23,10 @@ public class CategoriesRestController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CategoryResponse>> getAllCategories() {
-        return ResponseEntity.ok(this.categoriesService.getAllCategories());
+    public ResponseEntity<List<CategoryResponse>> getAllCategories(
+            @RequestParam(value = "filter", required = false) String filter
+    ) {
+        return ResponseEntity.ok(this.categoriesService.getAllCategories(filter));
     }
 
 }

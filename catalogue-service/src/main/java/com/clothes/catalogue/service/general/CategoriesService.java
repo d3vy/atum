@@ -10,7 +10,7 @@ public interface CategoriesService {
 
     CategoryResponse createCategory(NewCategoryPayload payload);
 
-    List<CategoryResponse> getAllCategories();
+    List<CategoryResponse> getAllCategories(String filter);
 
     CategoryResponse toResponse(Category category);
 

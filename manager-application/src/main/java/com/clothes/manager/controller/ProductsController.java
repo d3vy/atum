@@ -33,7 +33,7 @@ public class ProductsController {
     public String getProductsList(
             Model model,
             @RequestParam(value = "filter", required = false) String filter) {
-        model.addAttribute("products", productClient.findAllProducts(filter));
+        model.addAttribute("products", this.productClient.findAllProducts(filter));
         model.addAttribute("filter", filter);
         return "catalogue/products/list";
     }

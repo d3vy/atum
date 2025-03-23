@@ -1,6 +1,6 @@
 package com.clothes.manager.config;
 
-import com.clothes.manager.client.impl.CategoryClientImpl;
+import com.clothes.manager.client.impl.CategoriesClientImpl;
 import com.clothes.manager.client.impl.ProductClientImpl;
 import com.clothes.manager.client.impl.ProductsClientImpl;
 import com.clothes.manager.security.OAuthClientHttpRequestInterceptor;
@@ -83,13 +83,13 @@ public class ClientBeans {
     }
 
     @Bean
-    public CategoryClientImpl categoryClient(
+    public CategoriesClientImpl categoriesClient(
             @Value("${catalogue.service.base.uri:http://catalogue-service:8080}") String catalogueBaseUri,
             @Value("${catalogue.service.registration-id:keycloak}") String registrationId,
             ClientRegistrationRepository clientRegistrationRepository,
             OAuth2AuthorizedClientRepository auth2AuthorizedClientRepository
     ) {
-        return new CategoryClientImpl(RestClient.builder()
+        return new CategoriesClientImpl(RestClient.builder()
                 .baseUrl(catalogueBaseUri)
                 .requestInterceptor(
                         new OAuthClientHttpRequestInterceptor(

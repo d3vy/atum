@@ -3,18 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Categories &ndash; Clothing Store</title>
+    <title>Category List &ndash; ATUM</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 p-6">
 <div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-6">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold">Categories</h1>
-        <a href="/catalogue/categories/create_new_category"
-           class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-            + Add Category
-        </a>
-    </div>
+    <a data-th-href="@{/catalogue/categories/create_new_category}" class="text-blue-500 hover:underline">&larr; Create
+        New Category</a>
+    <h1 class="text-2xl font-bold mt-4 mb-6">Category List</h1>
+
+    <form method="get" data-th-action="@{/catalogue/categories/list}" class="mb-4 flex gap-2">
+        <label>
+            <input type="text" name="filter" data-th-value="${filter}"
+                   class="border border-gray-300 rounded p-2 w-full" placeholder="Search products...">
+        </label>
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Search</button>
+    </form>
+
     <table class="w-full border-collapse border border-gray-300">
         <thead>
         <tr class="bg-gray-200">

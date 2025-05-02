@@ -13,4 +13,6 @@ public interface ProductService {
     void deleteProductById(Integer id);
 
     boolean existsById(Integer productId);
+
+    void save(Product product);
 }

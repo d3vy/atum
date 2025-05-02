@@ -22,14 +22,20 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoriesService categoriesService;
 
     @Override
-    public CategoryResponse getCategoryById(UUID id) {
+    public CategoryResponse getCategoryById(Integer id) {
         Category category = this.categoryRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Category not found"));
         return categoriesService.toResponse(category);
     }
 
     @Override
-    public CategoryResponse updateCategory(UUID id, UpdateCategoryPayload payload) {
+    public Category findCategoryById(Integer id) {
+        return this.categoryRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
+    }
+
+    @Override
+    public CategoryResponse updateCategory(Integer id, UpdateCategoryPayload payload) {
 
         Category category = this.categoryRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Category not found"));
@@ -54,7 +60,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void deleteCategory(UUID id) {
+    public void deleteCategory(Integer id) {
         Category category = this.categoryRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Category not found"));
 

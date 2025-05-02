@@ -18,19 +18,19 @@ public class CategoryRestController {
     private final CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable UUID categoryId) {
+    public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable Integer categoryId) {
         return ResponseEntity.ok(this.categoryService.getCategoryById(categoryId));
     }
 
     @PatchMapping
     public ResponseEntity<CategoryResponse> updateCategory(
-            @PathVariable UUID categoryId,
+            @PathVariable Integer categoryId,
             @Valid @RequestBody UpdateCategoryPayload payload) {
         return ResponseEntity.ok(this.categoryService.updateCategory(categoryId, payload));
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteCategory(@PathVariable UUID categoryId) {
+    public ResponseEntity<Void> deleteCategory(@PathVariable Integer categoryId) {
         categoryService.deleteCategory(categoryId);
         return ResponseEntity.noContent().build();
     }

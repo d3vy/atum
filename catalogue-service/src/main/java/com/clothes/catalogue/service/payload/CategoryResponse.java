@@ -1,12 +1,11 @@
 package com.clothes.catalogue.service.payload;
 
 import java.util.List;
-import java.util.UUID;
 
 public record CategoryResponse(
-        UUID id,
+        Integer id,
         String title,
-        UUID parentId,
+        Integer parentId,
         List<CategoryResponse> subcategories
 ) {
 }

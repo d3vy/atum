@@ -82,4 +82,9 @@ public class ProductServiceImpl implements ProductService {
         log.info("Checking if product with id: {} exists", productId);
         return this.productRepository.existsById(productId);
     }
+
+    @Override
+    public void save(Product product) {
+        this.productRepository.save(product);
+    }
 }

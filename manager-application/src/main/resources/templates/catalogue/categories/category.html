@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category Details &ndash; ATUM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+<div class="max-w-2xl mx-auto bg-white shadow-lg rounded-lg p-6">
+    <a href="/catalogue/categories/list" class="text-blue-500 hover:underline">&larr; Back to Categories</a>
+
+    <h1 class="text-2xl font-bold mt-4 mb-6">Category Details</h1>
+
+    <div class="mb-4">
+        <p class="text-gray-700"><strong>ID:</strong> <span data-th-text="${category.id}">1</span></p>
+        <p class="text-gray-700"><strong>Title:</strong> <span data-th-text="${category.title}">Electronics</span></p>
+        <p class="text-gray-700"><strong>Parent ID:</strong>
+            <span data-th-if="${category.parentId != null}" data-th-text="${category.parentId}"></span>
+            <span data-th-unless="${category.parentId != null}" class="text-gray-500">No Parent</span>
+        </p>
+    </div>
+    <div class="mt-4 flex space-x-2">
+        <a data-th-href="@{/catalogue/categories/{categoryId}/edit_category(categoryId=${category.id})}"
+           class="bg-blue-500 text-white px-4 py-2 rounded">Edit</a>
+        <form method="post" data-th-action="@{/catalogue/categories/{categoryId}/delete_product(categoryId=${category.id})}">
+            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Delete</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

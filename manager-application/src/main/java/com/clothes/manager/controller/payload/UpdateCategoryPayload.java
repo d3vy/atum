@@ -4,6 +4,6 @@ import java.util.UUID;
 
 public record UpdateCategoryPayload(
         String title,
-        UUID parentId
+        Integer parentId
 ) {
 }

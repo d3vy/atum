@@ -1,12 +1,17 @@
 package com.clothes.catalogue.controller;
 
 import com.clothes.catalogue.controller.payload.UpdateProductPayload;
+import com.clothes.catalogue.model.Category;
 import com.clothes.catalogue.model.Product;
+import com.clothes.catalogue.service.general.CategoryService;
 import com.clothes.catalogue.service.general.ProductService;
+import com.clothes.catalogue.service.payload.CategoryResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.NoSuchElementException;
 
@@ -22,6 +27,7 @@ public class ProductRestController {
 
     // Сервис для работы с продуктами
     private final ProductService productService;
+    private final CategoryService categoryService;
 
     /**
      * Обрабатывает GET-запрос для получения информации о продукте по его идентификатору.
@@ -59,6 +65,22 @@ public class ProductRestController {
         productService.updateProduct(productId, payload.title(), payload.description());
         // Возвращаем ответ с HTTP-статусом 204 No Content, что означает успешное обновление без возвращаемого содержимого.
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping
+    public ResponseEntity<Void> assignCategoryToProduct(
+            @PathVariable Integer productId,
+            @RequestParam Integer categoryId
+    ) {
+        Product product = productService.findProductById(productId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Товар не найден"));
+
+        Category category = categoryService.findCategoryById(categoryId);
+
+        product.setCategory(category);
+        productService.save(product);
+
+        return ResponseEntity.ok().build();
     }
 
     /**

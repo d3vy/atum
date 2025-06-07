@@ -7,8 +7,19 @@ logging:
     org.springframework.security: debug
 
 spring:
+
   application:
     name: manager-application
+
+  boot:
+    admin:
+      client:
+        enabled: true
+        instance:
+          name: manager-application
+          service-host-type: ip
+        url: http://admin-server:8085
+
 
   security:
     oauth2:
@@ -21,12 +32,21 @@ spring:
           keycloak:
             clientId: manager-application
             clientSecret: EyPPKE2KC0WTFmLUby2ruW5UCLloZC8d
-            authorizationGrantType: authorization_code
             scope:
               - openid
               - microprofile-jwt
               - view_catalogue
               - edit_catalogue
+          metrics:
+            provider: keycloak
+            authorizationGrantType: client_credentials
+            clientId: manager-application-metrics-client
+            clientSecret: iYMiAQyonRMMBIv5UEpLBvbYDJyHSpHg
+            scope:
+              - metrics_server
+      resourceserver:
+        jwt:
+          issuerUri: http://keycloak:8080/realms/atum
 
   datasource:
     url: jdbc:postgresql://postgres:5432/products_catalogue_database
@@ -42,3 +62,15 @@ catalogue:
     base:
       uri: http://catalogue-service:8080
     registration-id: keycloak
+
+
+management:
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"

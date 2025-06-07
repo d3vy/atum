@@ -1,0 +1,37 @@
+server:
+  port: 8085
+
+spring:
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuerUri: http://keycloak:8080/realms/atum
+        registration:
+          keycloak:
+            authorizationGrantType: client_credentials
+            clientId: admin-server
+            clientSecret: Xh6RPIBbr4bGiVkdtDFhIoSmxCob1XrD
+            scope:
+              - metrics
+          login:
+            provider: keycloak
+            clientId: admin-server
+            clientSecret: Xh6RPIBbr4bGiVkdtDFhIoSmxCob1XrD
+            scope:
+              - openid
+              - metrics
+
+      resourceserver:
+        jwt:
+          issuer-uri: http://keycloak:8080/realms/atum
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - prometheus
+

@@ -7,6 +7,7 @@ logging:
     org.springframework.security: debug
 
 spring:
+
   application:
     name: manager-application
 

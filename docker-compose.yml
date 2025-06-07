@@ -6,7 +6,7 @@ services:
     image: postgres:16
     container_name: postgres
     ports:
-      - "5434:5432"
+      - "5434:5433"
     environment:
       SPRING_PROFILES_ACTIVE: docker
       POSTGRES_DB: products_catalogue_database
@@ -33,26 +33,26 @@ services:
       - atum-network
 
 
-#  # Keycloak
-#  keycloak:
-#    image: quay.io/keycloak/keycloak:25.0.2
-#    container_name: keycloak
-#    environment:
-#      SPRING_PROFILES_ACTIVE: docker
-#      KEYCLOAK_ADMIN: admin
-#      KEYCLOAK_ADMIN_PASSWORD: admin
-#      KC_HOSTNAME: localhost
-#      KC_HOSTNAME_PORT: 8082
-#      KC_HOSTNAME_STRICT: false
-#      KC_HOSTNAME_STRICT_HTTPS: false
-#      KC_PROXY: edge
-#    ports:
-#      - "8082:8080"
-#    volumes:
-#      - './config/keycloak/import:/opt/keycloak/data/import'
-#    command: start-dev --import-realm
-#    networks:
-#      - atum-network
+  # Keycloak
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0.2
+    container_name: keycloak
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_PORT: 8082
+      KC_HOSTNAME_STRICT: false
+      KC_HOSTNAME_STRICT_HTTPS: false
+      KC_PROXY: edge
+    ports:
+      - "8082:8082"
+    volumes:
+      - './config/keycloak/import:/opt/keycloak/data/import'
+    command: start-dev --import-realm
+    networks:
+      - atum-network
 
   # Catalogue Service
   catalogue-service:
@@ -68,6 +68,7 @@ services:
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: "!rT8v^Q2m#L5z@J9p*X3w&hF7"
       DB_SCHEMA: catalogue
+      KEYCLOAK_URL: http://keycloak:8080/auth
     networks:
       - atum-network
 
@@ -109,6 +110,7 @@ services:
     container_name: customer-application
     environment:
       SPRING_PROFILES_ACTIVE: docker
+      KEYCLOAK_URL: http://keycloak:8080/auth
     ports:
       - "8084:8084"
     networks:

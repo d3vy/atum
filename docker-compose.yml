@@ -1,125 +1,124 @@
 name: atum
+
 services:
 
-  # Postgresql
-  postgres:
-    image: postgres:16
-    container_name: postgres
-    ports:
-      - "5434:5433"
-    environment:
-      SPRING_PROFILES_ACTIVE: docker
-      POSTGRES_DB: products_catalogue_database
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: "!rT8v^Q2m#L5z@J9p*X3w&hF7"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - atum-network
-
-  # MongoDB
-  mongodb:
-    image: mongo:latest
-    container_name: mongodb
-    ports:
-      - "27017:27017"
-    environment:
-      SPRING_PROFILES_ACTIVE: docker
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
-    volumes:
-      - mongo-data:/data/db
-    networks:
-      - atum-network
-
-
-  # Keycloak
+  # Инфраструктура
   keycloak:
     image: quay.io/keycloak/keycloak:25.0.2
-    container_name: keycloak
     environment:
-      SPRING_PROFILES_ACTIVE: docker
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
-      KC_HOSTNAME: localhost
-      KC_HOSTNAME_PORT: 8082
-      KC_HOSTNAME_STRICT: false
-      KC_HOSTNAME_STRICT_HTTPS: false
-      KC_PROXY: edge
-    ports:
-      - "8082:8082"
     volumes:
       - './config/keycloak/import:/opt/keycloak/data/import'
+    ports:
+      - '8082:8080'
     command: start-dev --import-realm
     networks:
       - atum-network
 
-  # Catalogue Service
+  victoria-metrics:
+    image: victoriametrics/victoria-metrics:v1.93.12
+    command: -promscrape.config=/promscrape.yaml
+    volumes:
+      - './config/victoria-metrics/promscrape_docker_compose.yaml:/promscrape.yaml'
+    ports:
+      - '8428:8428'
+    networks:
+      - atum-network
+
+  catalogue-db:
+    image: postgres:16
+    ports:
+      - '5433:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: glhf5561783742
+      POSTGRES_DB: products_catalogue_database
+    networks:
+      - atum-network
+
+
+  feedback-db:
+    image: mongo:7
+    ports:
+      - '27017:27017'
+    networks:
+      - atum-network
+
+  admin-server:
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        JAR_FILE: admin-server/target/admin-server-25.1.1-SNAPSHOT-exec.jar
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    ports:
+      - '8085:8085'
+    depends_on:
+      - keycloak
+    networks:
+      - atum-network
+
   catalogue-service:
+    restart: always
     build:
-      context: ./catalogue-service
+      context: .
       dockerfile: Dockerfile
-    container_name: catalogue-service
-    ports:
-      - "8080:8080"
+      args:
+        JAR_FILE: catalogue-service/target/catalogue-service-25.1.1-SNAPSHOT-exec.jar
     environment:
       SPRING_PROFILES_ACTIVE: docker
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/products_catalogue_database
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: "!rT8v^Q2m#L5z@J9p*X3w&hF7"
-      DB_SCHEMA: catalogue
-      KEYCLOAK_URL: http://keycloak:8080/auth
+    depends_on:
+      - catalogue-db
+      - keycloak
     networks:
       - atum-network
 
-  # Manager Application
-  manager-application:
-    build:
-      context: ./manager-application
-      dockerfile: Dockerfile
-    container_name: manager-application
-    ports:
-      - "8081:8081"
-    environment:
-      SPRING_PROFILES_ACTIVE: docker
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/products_catalogue_database
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: "!rT8v^Q2m#L5z@J9p*X3w&hF7"
-      DB_SCHEMA: user_management
-    networks:
-      - atum-network
-
-  # Feedback Service
   feedback-service:
+    restart: always
     build:
-      context: ./feedback-service
+      context: .
       dockerfile: Dockerfile
-    container_name: feedback-service
+      args:
+        JAR_FILE: feedback-service/target/feedback-service-25.1.1-SNAPSHOT-exec.jar
     environment:
       SPRING_PROFILES_ACTIVE: docker
-    ports:
-      - "8083:8083"
+    depends_on:
+      - feedback-db
+      - keycloak
     networks:
       - atum-network
 
-  # Customer Application
   customer-application:
+    restart: always
     build:
-      context: ./customer-application
+      context: .
       dockerfile: Dockerfile
-    container_name: customer-application
+      args:
+        JAR_FILE: customer-application/target/customer-application-25.1.1-SNAPSHOT-exec.jar
     environment:
       SPRING_PROFILES_ACTIVE: docker
-      KEYCLOAK_URL: http://keycloak:8080/auth
-    ports:
-      - "8084:8084"
+    depends_on:
+      - feedback-service
+    networks:
+      - atum-network
+
+  manager-application:
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        JAR_FILE: manager-application/target/manager-application-25.1.1-SNAPSHOT-exec.jar
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      - catalogue-service
     networks:
       - atum-network
 
 networks:
   atum-network:
     driver: bridge
-
-volumes:
-  postgres_data:
-  mongo-data:

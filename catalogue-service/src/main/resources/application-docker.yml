@@ -16,30 +16,30 @@ spring:
         instance:
           name: catalogue-service
           service-host-type: ip
-        url: http://admin-service:8085  # Используем имя сервиса в сети Docker
+        url: http://admin-service:8085
 
   security:
     oauth2:
       client:
         provider:
           keycloak:
-            issuerUri: http://keycloak:8080/realms/atum  # Меняем с localhost на keycloak
+            issuerUri: http://keycloak:8080/realms/atum
         registration:
           keycloak:
             authorizationGrantType: client_credentials
             client-id: catalogue-service-metrics-client
-            client-secret: u34hkHPpwGWwx29mYcVr6g2BgySEQGts
+            client-secret: ${CATALOGUE_SERVICE_CLIENT_SECRET}
             scope:
               - metrics_server
 
       resourceserver:
         jwt:
-          issuer-uri: http://keycloak:8080/realms/atum  # Меняем для Docker
+          issuer-uri: http://keycloak:8080/realms/atum
 
   datasource:
-    url: jdbc:postgresql://postgres:5432/products_catalogue_database  # Меняем localhost на postgres
+    url: jdbc:postgresql://catalogue-db:5432/products_catalogue_database
     username: postgres
-    password: "!rT8v^Q2m#L5z@J9p*X3w&hF7"
+    password: ${CATALOGUE_SERVICE_DB_PASSWORD}
 
   flyway:
     enabled: true
@@ -51,7 +51,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: none  # Flyway управляет схемами, убираем update
+      ddl-auto: none
 
 springdoc:
   swagger-ui:
@@ -60,7 +60,7 @@ springdoc:
       use-pkce-with-authorization-code-grant: true
 
 keycloak:
-  uri: http://keycloak:8080  # Меняем для Docker
+  uri: http:/keycloak:8080/realms/atum
 
 management:
   health:

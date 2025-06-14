@@ -1,15 +1,40 @@
 apiVersion: apps/v1
+
 kind: Deployment
+
 metadata:
   name: atum-config-server
+  labels:
+    app: atum-config-server
+
 spec:
   selector:
-
+    matchLabels:
+      app: atum-config-server
   template:
+    metadata:
+      labels:
+        app: atum-config-server
     spec:
       containers:
         - name: atum-config-server
-          image: localhost:5000/atum/config-server:25.1.1
+          image: 192.168.49.1:5000/atum/config-server:25.1.1
           ports:
             - containerPort: 8888
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: git
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: atum-config-server-svc
+spec:
+  type: NodePort
+  ports:
+    - port: 8888
+      name: http
+  selector:
+    app: atum-config-server
+
               

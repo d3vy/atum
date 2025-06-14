@@ -16,7 +16,7 @@ spring:
 
   data:
     mongodb:
-      uri: mongodb://mongodb:27017/feedback-service-database
+      uri: mongodb://feedback-db:27017/feedback-service-database
 
   security:
     oauth2:
@@ -28,7 +28,7 @@ spring:
           keycloak:
             authorizationGrantType: client_credentials
             client-id: feedback-service-metrics-client
-            client-secret: 2s0iVksCTI7VvYJBZo2Y4aHiuvtCgJFx
+            client-secret: ${FEEDBACK_SERVICE_CLIENT_SECRET}
             scope:
               - metrics_server
       resourceserver:
@@ -47,7 +47,7 @@ springdoc:
       use-pkce-with-authorization-code-grant: true
 
 keycloak:
-  uri: http://keycloak:8080
+  uri: http://keycloak:8080/realms/atum
 
 management:
   health:

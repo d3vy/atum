@@ -7,7 +7,6 @@ logging:
     org.springframework.security: debug
 
 spring:
-
   application:
     name: manager-application
 
@@ -20,13 +19,12 @@ spring:
           service-host-type: ip
         url: http://admin-server:8085
 
-
   security:
     oauth2:
       client:
         provider:
           keycloak:
-            issuerUri: http://keycloak:8080/realms/atum
+            issuer-uri: http://keycloak:8080/realms/atum
             userNameAttribute: preferred_username
         registration:
           keycloak:
@@ -46,10 +44,10 @@ spring:
               - metrics_server
       resourceserver:
         jwt:
-          issuerUri: http://keycloak:8080/realms/atum
+          issuer-uri: http://keycloak:8080/realms/atum
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/products_catalogue_database
+    url: jdbc:postgresql://catalogue-db:5432/products_catalogue_database
     username: postgres
     password: ${MANAGER_APPLICATION_DB_PASSWORD}
 
@@ -62,7 +60,6 @@ catalogue:
     base:
       uri: http://catalogue-service:8080
     registration-id: keycloak
-
 
 management:
   health:

@@ -16,14 +16,14 @@ spring:
         instance:
           name: catalogue-service
           service-host-type: ip
-        url: http://admin-service:8085
+        url: http://admin-server:8085
 
   security:
     oauth2:
       client:
         provider:
           keycloak:
-            issuerUri: http://keycloak:8080/realms/atum
+            issuer-uri: http://keycloak:8080/realms/atum
         registration:
           keycloak:
             authorizationGrantType: client_credentials
@@ -60,7 +60,7 @@ springdoc:
       use-pkce-with-authorization-code-grant: true
 
 keycloak:
-  uri: http:/keycloak:8080/realms/atum
+  uri: http://keycloak:8080/realms/atum
 
 management:
   health:

@@ -2,7 +2,6 @@ server:
   port: 8084
 
 spring:
-
   application:
     name: customer-application
 
@@ -20,7 +19,7 @@ spring:
       client:
         provider:
           keycloak:
-            issuerUri: http://keycloak:8080/realms/atum
+            issuer-uri: http://keycloak:8080/realms/atum
             userNameAttribute: preferred_username
         registration:
           keycloak:
@@ -42,6 +41,7 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://keycloak:8080/realms/atum
+
 atum:
   services:
     catalogue:

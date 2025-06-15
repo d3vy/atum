@@ -2,7 +2,6 @@ server:
   port: 8083
 
 spring:
-
   application:
     name: feedback-service
 
@@ -23,12 +22,12 @@ spring:
       client:
         provider:
           keycloak:
-            issuerUri: http://keycloak:8080/realms/atum
+            issuer-uri: http://keycloak:8080/realms/atum
         registration:
           keycloak:
             authorizationGrantType: client_credentials
-            client-id: feedback-service-metrics-client
-            client-secret: ${FEEDBACK_SERVICE_CLIENT_SECRET}
+            clientId: feedback-service-metrics-client
+            clientSecret: ${FEEDBACK_SERVICE_CLIENT_SECRET}
             scope:
               - metrics_server
       resourceserver:

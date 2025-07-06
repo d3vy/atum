@@ -67,21 +67,14 @@ public class ProductRestController {
         return ResponseEntity.noContent().build();
     }
 
-//    @PutMapping
-//    public ResponseEntity<Void> assignCategoryToProduct(
-//            @PathVariable Integer productId,
-//            @RequestParam Integer categoryId
-//    ) {
-//        Product product = productService.findProductById(productId)
-//                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Товар не найден"));
-//
-//        Category category = categoryService.findCategoryById(categoryId);
-//
-//        product.setCategory(category);
-//        productService.save(product);
-//
-//        return ResponseEntity.ok().build();
-//    }
+    @PutMapping
+    public ResponseEntity<Void> assignCategoryToProduct(
+            @PathVariable Integer productId,
+            @RequestParam Integer categoryId
+    ) {
+        this.productService.assignProductToCategory(productId, categoryId);
+        return ResponseEntity.ok().build();
+    }
 
     /**
      * Обрабатывает DELETE-запрос для удаления продукта по его идентификатору.

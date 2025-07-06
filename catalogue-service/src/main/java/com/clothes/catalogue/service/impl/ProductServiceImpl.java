@@ -1,6 +1,8 @@
 package com.clothes.catalogue.service.impl;
 
+import com.clothes.catalogue.model.Category;
 import com.clothes.catalogue.model.Product;
+import com.clothes.catalogue.repository.CategoryRepository;
 import com.clothes.catalogue.repository.ProductRepository;
 import com.clothes.catalogue.service.general.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -8,8 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Реализация сервиса для работы с товарами.
@@ -22,6 +23,7 @@ public class ProductServiceImpl implements ProductService {
 
     // Репозиторий для доступа к данным сущности Product
     private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
 
     /**
      * Ищет продукт по идентификатору.
@@ -33,6 +35,17 @@ public class ProductServiceImpl implements ProductService {
     public Optional<Product> findProductById(Integer productId) {
         log.info("Searching for product with id: {}", productId);
         return this.productRepository.findById(productId);
+    }
+
+    @Override
+    public List<Product> findProductByCategoryTree(Integer categoryId) {
+        Category root = this.categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new NoSuchElementException("Category with id " + categoryId + " not found"));
+
+        Set<Integer> categoryIds = new HashSet<>();
+        collectCategoryIds(root, categoryIds);
+
+        return this.productRepository.findProductByCategoryIdIn(categoryIds);
     }
 
     /**
@@ -86,5 +99,27 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void save(Product product) {
         this.productRepository.save(product);
+    }
+
+    @Override
+    @Transactional
+    public void assignProductToCategory(Integer productId, Integer categoryId) {
+        Product product = this.productRepository.findById(productId)
+                .orElseThrow(() -> new NoSuchElementException("Product with id " + productId + " not found"));
+
+        Category category = this.categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new NoSuchElementException("Category with id " + categoryId + " not found"));
+
+        product.setCategory(category);
+        this.productRepository.save(product);
+
+        log.info("Connected product with id {} to category with id {}", productId, categoryId);
+    }
+
+    private void collectCategoryIds(Category category, Set<Integer> ids) {
+        ids.add(category.getId());
+        for (Category subcategory : category.getSubcategories()) {
+            collectCategoryIds(subcategory, ids);
+        }
     }
 }

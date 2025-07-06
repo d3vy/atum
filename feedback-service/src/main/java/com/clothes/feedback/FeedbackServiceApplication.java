@@ -26,7 +26,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class FeedbackServiceApplication {
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(FeedbackServiceApplication.class);
-        app.setAdditionalProfiles("docker");
+        app.setAdditionalProfiles("standalone");
         app.run(args);
     }
 }

@@ -55,6 +55,6 @@ public class ProductsServiceImpl implements ProductsService {
         // Логирование создания нового товара
         log.info("Product with title {} has been created", title);
         // Сохраняем новый товар в базу данных. Идентификатор передается как null, чтобы база его сгенерировала.
-        return this.productRepository.save(new Product(null, title, description));
+        return this.productRepository.save(new Product(null, title, description,null));
     }
 }

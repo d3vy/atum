@@ -43,13 +43,13 @@ public class ProductClientImpl implements ProductClient {
      * @param description новое описание товара
      */
     @Override
-    public void updateProduct(Integer productId, String title, String description) {
+    public void updateProduct(Integer productId, String title, String description, Integer categoryId) {
         log.info("Updating product with id: {}", productId);
         this.restClient
                 .patch()
                 .uri("/api/v1/catalogue/products/{productId}", productId)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(new UpdateProductPayload(title, description))
+                .body(new UpdateProductPayload(title, description, categoryId))
                 .retrieve()
                 .toBodilessEntity();
     }
@@ -65,6 +65,20 @@ public class ProductClientImpl implements ProductClient {
         this.restClient
                 .delete()
                 .uri("/api/v1/catalogue/products/{productId}", productId)
+                .retrieve()
+                .toBodilessEntity();
+    }
+
+    @Override
+    public void assignProductToCategory(Integer productId, Integer categoryId) {
+        log.info("Assigning product with id: {} to category with id: {}", productId, categoryId);
+        this.restClient
+                .put()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/api/v1/catalogue/products/{productId}")
+                        .queryParam("categoryId", categoryId)
+                        .build(productId)
+                )
                 .retrieve()
                 .toBodilessEntity();
     }

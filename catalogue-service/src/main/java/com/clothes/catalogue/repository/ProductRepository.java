@@ -6,6 +6,9 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Set;
+
 /**
  * Репозиторий для работы с сущностью Product.
  * Расширяет CrudRepository, предоставляя стандартные CRUD-операции для сущности Product с идентификатором типа Integer.
@@ -24,4 +27,8 @@ public interface ProductRepository extends CrudRepository<Product, Integer> {
             nativeQuery = true
     )
     Iterable<Product> findAllByTitleLikeIgnoreCase(@Param("filter") String filter);
+
+    List<Product> findProductByCategoryId(Integer categoryId);
+
+    List<Product> findProductByCategoryIdIn(Set<Integer> categoryIds);
 }

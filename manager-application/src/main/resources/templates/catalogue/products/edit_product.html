@@ -31,6 +31,20 @@
                 class="border border-gray-300 rounded p-2 w-full"></textarea>
     </label>
 
+    <label class="block">
+      <span class="text-gray-700">Category:</span>
+      <select name="categoryId"
+              class="border border-gray-300 rounded p-2 w-full">
+        <option value="" data-th-selected="${payload == null and product != null and product.category == null}">-- No category --</option>
+        <option value="" data-th-selected="${payload == null and (product.category == null)}">-- No category --</option>
+        <option data-th-each="cat : ${categories}"
+                data-th-value="${cat.id}"
+                data-th-text="${cat.name}"
+                data-th-selected="${(payload != null ? payload.categoryId : (product.category != null ? product.category.id : null)) == cat.id}">
+        </option>
+      </select>
+    </label>
+
     <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Edit</button>
   </form>
 </div>

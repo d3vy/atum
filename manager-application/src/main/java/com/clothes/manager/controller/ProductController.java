@@ -1,5 +1,7 @@
 package com.clothes.manager.controller;
 
+import com.clothes.manager.client.general.CategoriesClient;
+import com.clothes.manager.client.general.CategoryClient;
 import com.clothes.manager.client.general.ProductClient;
 import com.clothes.manager.controller.payload.UpdateProductPayload;
 import com.clothes.manager.dto.Product;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
     private final ProductClient productClient;
+    private final CategoriesClient categoriesClient;
 
     /**
      * Добавляет объект продукта в модель на основе идентификатора из пути.
@@ -46,7 +49,8 @@ public class ProductController {
      * @return имя представления для редактирования продукта
      */
     @GetMapping("edit_product")
-    public String getProductEditPage() {
+    public String getProductEditPage(Model model) {
+        model.addAttribute("categories", this.categoriesClient.getAllCategories(null));
         return "catalogue/products/edit_product";
     }
 
@@ -64,7 +68,7 @@ public class ProductController {
             UpdateProductPayload payload,
             Model model) {
         try {
-            this.productClient.updateProduct(product.id(), payload.title(), payload.description());
+            this.productClient.updateProduct(product.id(), payload.title(), payload.description(), payload.categoryId());
             return "redirect:/catalogue/products/%d".formatted(product.id());
         } catch (BadRequestException exception) {
             model.addAttribute("payload", payload);
@@ -85,4 +89,20 @@ public class ProductController {
         this.productClient.deleteProductById(product.id());
         return "redirect:/catalogue/products/list";
     }
+
+//    @PostMapping("assign_product_to_category")
+//    public String assignProductToCategory(
+//            @ModelAttribute(value = "product", binding = false) Product product,
+//            @RequestParam("categoryId") Integer categoryId,
+//            Model model
+//    ) {
+//        try {
+//            this.productClient.assignProductToCategory(product.id(), categoryId);
+//            return "redirect:/catalogue/products/%d".formatted(product.id());
+//        } catch (BadRequestException e) {
+//            model.addAttribute("error", "Не удалось назначить категорию: " + e.getMessage());
+//            return "catalogue/products/edit_product";
+//        }
+//
+//    }
 }

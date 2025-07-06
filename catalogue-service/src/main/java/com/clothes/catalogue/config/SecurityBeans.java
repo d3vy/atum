@@ -24,6 +24,8 @@ public class SecurityBeans {
                         .hasAuthority("SCOPE_edit_catalogue")
                         .requestMatchers(HttpMethod.PATCH, "/api/v1/catalogue/products/{productId:\\d+}", "/api/v1/catalogue/categories/{categoryId}")
                         .hasAuthority("SCOPE_edit_catalogue")
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/catalogue/products/{productId:\\d+}")
+                        .hasAuthority("SCOPE_edit_catalogue")
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/catalogue/products/{productId:\\d+}", "/api/v1/catalogue/categories/{categoryId}")
                         .hasAuthority("SCOPE_edit_catalogue")
                         .requestMatchers(HttpMethod.POST, "/api/v1/catalogue/categories")

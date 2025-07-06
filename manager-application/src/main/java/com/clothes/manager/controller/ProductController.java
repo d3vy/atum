@@ -3,10 +3,12 @@ package com.clothes.manager.controller;
 import com.clothes.manager.client.general.CategoriesClient;
 import com.clothes.manager.client.general.CategoryClient;
 import com.clothes.manager.client.general.ProductClient;
+import com.clothes.manager.client.payload.CategoryResponse;
 import com.clothes.manager.controller.payload.UpdateProductPayload;
 import com.clothes.manager.dto.Product;
 import com.clothes.manager.exception.error.BadRequestException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +35,17 @@ public class ProductController {
         return this.productClient.findProductById(productId);
     }
 
+    @ModelAttribute("categoryTitle")
+    public String categoryName(@ModelAttribute("product") Product product) {
+        if (product.categoryId() == null) return "Нет категории";
+        return categoriesClient.getAllCategories("")
+                .stream()
+                .filter(c -> c.id().equals(product.categoryId()))
+                .findFirst()
+                .map(CategoryResponse::title)
+                .orElse("Неизвестная категория");
+    }
+
     /**
      * Обрабатывает GET-запрос для отображения информации о продукте.
      *
@@ -49,9 +62,14 @@ public class ProductController {
      * @return имя представления для редактирования продукта
      */
     @GetMapping("edit_product")
-    public String getProductEditPage(Model model) {
-        model.addAttribute("categories", this.categoriesClient.getAllCategories(null));
+    public String getProductEditPage() {
         return "catalogue/products/edit_product";
+    }
+
+    @GetMapping("assign_product_to_category")
+    public String assignProductToCategory(Model model) {
+        model.addAttribute("categories", this.categoriesClient.getAllCategories(""));
+        return "catalogue/products/assign_product_to_category";
     }
 
     /**
@@ -90,19 +108,19 @@ public class ProductController {
         return "redirect:/catalogue/products/list";
     }
 
-//    @PostMapping("assign_product_to_category")
-//    public String assignProductToCategory(
-//            @ModelAttribute(value = "product", binding = false) Product product,
-//            @RequestParam("categoryId") Integer categoryId,
-//            Model model
-//    ) {
-//        try {
-//            this.productClient.assignProductToCategory(product.id(), categoryId);
-//            return "redirect:/catalogue/products/%d".formatted(product.id());
-//        } catch (BadRequestException e) {
-//            model.addAttribute("error", "Не удалось назначить категорию: " + e.getMessage());
-//            return "catalogue/products/edit_product";
-//        }
-//
-//    }
+    @PostMapping("assign_product_to_category.html")
+    public String assignProductToCategory(
+            @ModelAttribute(value = "product", binding = false) Product product,
+            @RequestParam("categoryId") Integer categoryId,
+            Model model
+    ) {
+        try {
+            this.productClient.assignProductToCategory(product.id(), categoryId);
+            return "redirect:/catalogue/products/%d".formatted(product.id());
+        } catch (BadRequestException e) {
+            model.addAttribute("error", "Не удалось назначить категорию: " + e.getMessage());
+            return "catalogue/products/edit_product";
+        }
+
+    }
 }

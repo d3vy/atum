@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assign Category &laquo;[[${product.title}]]&raquo; – Clothing Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+<div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-6">
+    <a th:href="@{/catalogue/products/{productId}(productId=${product.id})}" class="text-blue-500 hover:underline">&larr; Product</a>
+    <h1 class="text-2xl font-bold mt-4 mb-6">Assign Category to &laquo;[[${product.title}]]&raquo;</h1>
+
+    <div th:if="${error}" class="mb-4 p-4 bg-red-100 border border-red-300 rounded">
+        <p class="text-red-600 font-semibold" th:text="${error}"></p>
+    </div>
+
+    <form method="post"
+          th:action="@{/catalogue/products/{productId}/assign_product_to_category.html(productId=${product.id})}"
+          class="space-y-4">
+
+        <label class="block">
+            <span class="text-gray-700">Select Category:</span>
+            <select name="categoryId"
+                    class="border border-gray-300 rounded p-2 w-full"
+                    required>
+                <option value="" disabled selected>Select a category</option>
+                <option th:each="category : ${categories}"
+                        th:value="${category.id}"
+                        th:text="${category.title}"
+                        th:selected="false">
+                </option>
+            </select>
+        </label>
+
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Assign</button>
+    </form>
+</div>
+</body>
+</html>

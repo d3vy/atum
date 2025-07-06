@@ -21,7 +21,6 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 @Configuration
-@Slf4j
 public class SecurityBeans {
 
     @Bean

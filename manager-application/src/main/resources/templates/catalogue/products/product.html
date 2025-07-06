@@ -15,11 +15,14 @@
     <li><strong>ID:</strong> <span data-th-text="${product.id}"></span></li>
     <li><strong>Title:</strong> <span data-th-text="${product.title}"></span></li>
     <li><strong>Description:</strong> <span data-th-text="${product.description}"></span></li>
+    <li><strong>Category:</strong> <span data-th-text="${categoryTitle}"></span></li>
   </ul>
 
   <div class="mt-4 flex space-x-2">
     <a data-th-href="@{/catalogue/products/{productId}/edit_product(productId=${product.id})}"
        class="bg-blue-500 text-white px-4 py-2 rounded">Edit</a>
+    <a data-th-href="@{/catalogue/products/{productId}/assign_product_to_category(productId=${product.id})}"
+       class="bg-blue-500 text-white px-4 py-2 rounded">Assign to category</a>
     <form method="post" data-th-action="@{/catalogue/products/{productId}/delete_product(productId=${product.id})}">
       <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Delete</button>
     </form>

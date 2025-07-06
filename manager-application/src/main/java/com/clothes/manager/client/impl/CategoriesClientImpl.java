@@ -36,7 +36,6 @@ public class CategoriesClientImpl implements CategoriesClient {
                 .uri("/api/v1/catalogue/categories?filter={filter}", filter)
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {
-
                 });
     }
 

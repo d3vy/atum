@@ -1,6 +1,7 @@
 package com.clothes.catalogue.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -16,6 +17,7 @@ import java.util.List;
 @ToString(exclude = "subcategories")
 @EqualsAndHashCode(of = "id")
 @Table(schema = "catalogue", name = "categories")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Category {
 
     @Id

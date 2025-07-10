@@ -9,6 +9,7 @@ import com.clothes.manager.dto.Product;
 import com.clothes.manager.exception.error.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import lombok.extern.slf4j.XSlf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("catalogue/products/{productId:\\d+}")
+@Slf4j
 public class ProductController {
 
     private final ProductClient productClient;
@@ -33,17 +35,6 @@ public class ProductController {
     @ModelAttribute("product")
     public Product product(@PathVariable("productId") Integer productId) {
         return this.productClient.findProductById(productId);
-    }
-
-    @ModelAttribute("categoryTitle")
-    public String categoryName(@ModelAttribute("product") Product product) {
-        if (product.categoryId() == null) return "Нет категории";
-        return categoriesClient.getAllCategories("")
-                .stream()
-                .filter(c -> c.id().equals(product.categoryId()))
-                .findFirst()
-                .map(CategoryResponse::title)
-                .orElse("Неизвестная категория");
     }
 
     /**

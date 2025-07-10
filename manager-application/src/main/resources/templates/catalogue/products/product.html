@@ -15,7 +15,10 @@
     <li><strong>ID:</strong> <span data-th-text="${product.id}"></span></li>
     <li><strong>Title:</strong> <span data-th-text="${product.title}"></span></li>
     <li><strong>Description:</strong> <span data-th-text="${product.description}"></span></li>
-    <li><strong>Category:</strong> <span data-th-text="${categoryTitle}"></span></li>
+    <li>
+      <strong>Category:</strong>
+      <span data-th-text="${product.category != null ? product.category.title : 'Нет категории'}"></span>
+    </li>
   </ul>
 
   <div class="mt-4 flex space-x-2">

@@ -12,13 +12,13 @@ spring:
           keycloak:
             authorizationGrantType: client_credentials
             clientId: admin-server
-            clientSecret: Xh6RPIBbr4bGiVkdtDFhIoSmxCob1XrD
+            clientSecret: Da4WFWZ1gEWJgNRSGhDcAHWKNFdzI1eG
             scope:
               - metrics
           login:
             provider: keycloak
             clientId: admin-server
-            clientSecret: Xh6RPIBbr4bGiVkdtDFhIoSmxCob1XrD
+            clientSecret: Da4WFWZ1gEWJgNRSGhDcAHWKNFdzI1eG
             scope:
               - openid
               - metrics

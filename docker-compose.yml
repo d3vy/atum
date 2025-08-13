@@ -7,7 +7,11 @@ services:
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
-
+      KC_HTTP_ENABLED: "true"
+      KC_HOSTNAME_URL: "http://localhost:8082"
+      KC_HOSTNAME_ADMIN_URL: "http://localhost:8082"
+      KC_HOSTNAME_STRICT: "false"
+      KC_HOSTNAME_STRICT_BACKCHANNEL: "false"
     env_file:
       - .env
     volumes:
@@ -81,7 +85,7 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: docker
       CATALOGUE_SERVICE_CLIENT_SECRET: u34hkHPpwGWwx29mYcVr6g2BgySEQGts
-      CATALOGUE_SERVICE_DB_PASSWORD: "!rT8v^Q2m#L5z@J9p*X3w&hF7"
+      POSTGRES_PASSWORD: "!rT8v^Q2m#L5z@J9p*X3w&hF7"
     env_file:
       - .env
     ports:

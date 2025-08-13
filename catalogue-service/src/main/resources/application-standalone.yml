@@ -28,7 +28,7 @@ spring:
           keycloak:
             authorizationGrantType: client_credentials
             client-id: catalogue-service-metrics-client
-            client-secret: u34hkHPpwGWwx29mYcVr6g2BgySEQGts
+            client-secret: hJrDVFR0ocEHehCbFxrvfwMmUx6AtFUY
             scope:
               - metrics_server
 
@@ -37,7 +37,7 @@ spring:
           issuer-uri: http://localhost:8082/realms/atum
 
   datasource:
-    url: jdbc:postgresql://localhost:5433/products_catalogue_database
+    url: jdbc:postgresql://localhost:5432/products_catalogue_database
     username: postgres
     password: "!rT8v^Q2m#L5z@J9p*X3w&hF7"
 

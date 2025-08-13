@@ -28,7 +28,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class CatalogueServiceApplication {
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(CatalogueServiceApplication.class);
-        app.setAdditionalProfiles("docker");
+        app.setAdditionalProfiles("standalone");
         app.run(args);
     }
 }

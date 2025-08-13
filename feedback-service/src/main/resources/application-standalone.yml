@@ -28,7 +28,7 @@ spring:
           keycloak:
             authorizationGrantType: client_credentials
             client-id: feedback-service-metrics-client
-            client-secret: 2s0iVksCTI7VvYJBZo2Y4aHiuvtCgJFx
+            client-secret: rEcd2XRHyviQF8Zz9SK6WI2GeKBUyJY3
             scope:
               - metrics_server
       resourceserver:

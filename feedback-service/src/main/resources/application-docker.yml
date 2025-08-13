@@ -16,7 +16,6 @@ spring:
   data:
     mongodb:
       uri: mongodb://feedback-db:27017/feedback-service-database
-
   security:
     oauth2:
       client:
@@ -27,7 +26,7 @@ spring:
           keycloak:
             authorizationGrantType: client_credentials
             clientId: feedback-service-metrics-client
-            clientSecret: ${FEEDBACK_SERVICE_CLIENT_SECRET}
+            clientSecret: 2s0iVksCTI7VvYJBZo2Y4aHiuvtCgJFx
             scope:
               - metrics_server
       resourceserver:

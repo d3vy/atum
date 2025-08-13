@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class CustomerApplication {
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(CustomerApplication.class);
-        app.setAdditionalProfiles("standalone");
+        app.setAdditionalProfiles("docker");
         app.run(args);
     }
 }

@@ -10,26 +10,19 @@ import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClient;
 
 import java.util.List;
+import java.util.Set;
 
-/**
- * Реализация клиента для взаимодействия с сервисом каталога продуктов.
- */
+
 @Slf4j
 @RequiredArgsConstructor
 public class ProductsClientImpl implements ProductsClient {
 
     private final RestClient restClient;
 
-    /**
-     * Получает список продуктов с возможностью фильтрации по названию.
-     *
-     * @param filter строка фильтрации по названию продукта; может быть null или пустой для получения всех продуктов.
-     * @return список продуктов, соответствующих фильтру.
-     */
+
     @Override
     public List<Product> findAllProducts(String filter) {
         log.info("Fetching all products with filter: {}", filter);
-        // Выполняем GET-запрос к сервису каталога для получения списка продуктов
         return this.restClient
                 .get()
                 .uri("/api/v1/catalogue/products?filter={filter}", filter)
@@ -38,19 +31,37 @@ public class ProductsClientImpl implements ProductsClient {
                 });
     }
 
-    /**
-     * Создает новый продукт в сервисе каталога.
-     *
-     * @param title       название продукта.
-     * @param description описание продукта.
-     * @return созданный продукт с присвоенным идентификатором.
-     */
+    @Override
+    public List<Product> findAllProducts(String filter, Integer filterCategory) {
+        log.info("Fetching products with filter: '{}' and categoryId: {}", filter, filterCategory);
+
+        var uriBuilder = new StringBuilder("/api/v1/catalogue/products?");
+
+        if (filter != null && !filter.isBlank()) {
+            uriBuilder.append("filter=").append(filter).append("&");
+        }
+
+        if (filterCategory != null) {
+            uriBuilder.append("categoryId=").append(filterCategory).append("&");
+        }
+
+        if (uriBuilder.charAt(uriBuilder.length() - 1) == '&' || uriBuilder.charAt(uriBuilder.length() - 1) == '?') {
+            uriBuilder.deleteCharAt(uriBuilder.length() - 1);
+        }
+
+        return this.restClient
+                .get()
+                .uri(uriBuilder.toString())
+                .retrieve()
+                .body(new ParameterizedTypeReference<>() {
+                });
+    }
+
+
     @Override
     public Product createProduct(String title, String description) {
         log.info("Creating a new product with title: {}", title);
-        // Создаем объект payload для передачи данных нового продукта
         NewProductPayload payload = new NewProductPayload(title, description);
-        // Выполняем POST-запрос к сервису каталога для создания нового продукта
         return this.restClient
                 .post()
                 .uri("/api/v1/catalogue/products")
@@ -58,5 +69,30 @@ public class ProductsClientImpl implements ProductsClient {
                 .body(payload)
                 .retrieve()
                 .body(Product.class);
+    }
+
+    @Override
+    public List<Product> findAllProductsByFilterAndCategoryIds(String filter, Set<Integer> categoryIdsForFilter) {
+
+        var uriBuilder = new StringBuilder("/api/v1/catalogue/products?");
+
+        if (filter != null && !filter.isBlank()) {
+            uriBuilder.append("filter=").append(filter).append("&");
+        }
+
+        for (Integer categoryId : categoryIdsForFilter) {
+            uriBuilder.append("categoryId=").append(categoryId).append("&");
+        }
+
+        if (uriBuilder.charAt(uriBuilder.length() - 1) == '&') {
+            uriBuilder.deleteCharAt(uriBuilder.length() - 1);
+        }
+
+        return this.restClient
+                .get()
+                .uri(uriBuilder.toString())
+                .retrieve()
+                .body(new ParameterizedTypeReference<>() {
+                });
     }
 }

@@ -24,7 +24,7 @@ spring:
         registration:
           keycloak:
             clientId: customer-application
-            clientSecret: ${CUSTOMER_APPLICATION_CLIENT_SECRET}
+            clientSecret: 1gaU2P582s1NSl0SRNAtYeDX6ZB9nDvO
             authorizationGrantType: authorization_code
             scope:
               - openid
@@ -34,7 +34,7 @@ spring:
             provider: keycloak
             authorizationGrantType: client_credentials
             clientId: customer-application-metrics-client
-            clientSecret: ${CUSTOMER_APPLICATION_METRICS_CLIENT_SECRET}
+            clientSecret: jrGLZAkIEUn5zv5c2IiHl987pbwmZzpd
             scope:
               - metrics_server
 

@@ -31,9 +31,7 @@ public class ProductController {
     private final FavoriteProductsClient favoriteProductsClient;
     private final ProductReviewsClient productReviewsClient;
 
-    /**
-     * Загружает продукт по идентификатору. Если продукт не найден, генерируется ошибка.
-     */
+
     @ModelAttribute(value = "product", binding = false)
     public Mono<Product> loadProduct(@PathVariable("productId") Integer productId) {
         return this.productsClient
@@ -42,45 +40,29 @@ public class ProductController {
                         () -> Mono.error(new NoSuchElementException("customer.products.error.not_found"))));
     }
 
-    /**
-     * Обрабатывает GET-запрос для страницы продукта.
-     * Здесь загружаются:
-     * - Избранность продукта для текущего пользователя (inFavorites)
-     * - Список отзывов
-     * Все данные добавляются в модель перед рендерингом шаблона.
-     */
+
     @GetMapping
     public Mono<String> getProductPage(Model model,
                                        @ModelAttribute("product") Mono<Product> productMono) {
         return productMono.flatMap(product ->
-                // Проверяем, находится ли продукт в избранном
                 this.favoriteProductsClient.findFavoriteProductByProductId(product.id())
-                        // Если найден, маппим в true
                         .map(fav -> true)
-                        // Если ответа нет, по умолчанию ставим false
                         .defaultIfEmpty(false)
-                        // Добавляем результат в модель
                         .doOnNext(inFavorites -> model.addAttribute("inFavorites", inFavorites))
-                        // Далее загружаем отзывы по продукту
                         .then(this.productReviewsClient.findProductReviewsByProductId(product.id())
                                 .collectList()
                                 .doOnNext(reviews -> model.addAttribute("reviews", reviews)))
-                        // Возвращаем имя шаблона для рендеринга страницы
                         .thenReturn("customer/products/product")
         );
     }
 
-    /**
-     * Обрабатывает POST-запрос для добавления продукта в избранное.
-     * После успешного добавления происходит редирект на страницу продукта.
-     */
+
     @PostMapping("add-to-favorites")
     public Mono<String> addProductToFavorites(@ModelAttribute("product") Mono<Product> productMono) {
         return productMono
                 .map(Product::id)
                 .flatMap(productId ->
                         this.favoriteProductsClient.addProductToFavorites(productId)
-                                // После добавления выполняется редирект
                                 .thenReturn("redirect:/customer/products/%d".formatted(productId))
                                 .onErrorResume(exception -> {
                                     log.error("Ошибка при добавлении в избранное: {}", exception.getMessage(), exception);
@@ -89,10 +71,7 @@ public class ProductController {
                 );
     }
 
-    /**
-     * Обрабатывает POST-запрос для удаления продукта из избранного.
-     * После удаления выполняется редирект на страницу продукта.
-     */
+
     @PostMapping("remove-from-favorites")
     public Mono<String> removeProductFromFavorites(@ModelAttribute("product") Mono<Product> productMono) {
         return productMono
@@ -103,10 +82,7 @@ public class ProductController {
                 );
     }
 
-    /**
-     * Обрабатывает POST-запрос для создания отзыва к продукту.
-     * В случае ошибок добавляются ошибки и другие данные в модель для повторного отображения формы.
-     */
+
     @PostMapping("create-review")
     public Mono<String> createReview(@ModelAttribute("product") Mono<Product> productMono,
                                      NewProductReviewPayload payload,
@@ -116,12 +92,10 @@ public class ProductController {
                 this.productReviewsClient.createProductReview(product.id(), payload.rating(), payload.review())
                         .thenReturn("redirect:/customer/products/%d".formatted(product.id()))
                         .onErrorResume(ClientBadRequestException.class, exception -> {
-                            // В случае ошибки устанавливаем inFavorites в false по умолчанию
                             model.addAttribute("inFavorites", false);
                             model.addAttribute("payload", payload);
                             model.addAttribute("errors", exception.getErrors());
                             response.setStatusCode(HttpStatus.BAD_REQUEST);
-                            // Обновляем состояние избранного для отображения кнопки
                             return this.favoriteProductsClient.findFavoriteProductByProductId(product.id())
                                     .doOnNext(fav -> model.addAttribute("inFavorites", true))
                                     .thenReturn("customer/products/product");
@@ -129,10 +103,6 @@ public class ProductController {
         );
     }
 
-    /**
-     * Обработчик исключения NoSuchElementException.
-     * Устанавливает статус 404 и передаёт сообщение об ошибке в модель.
-     */
     @ExceptionHandler(NoSuchElementException.class)
     public String handeNoSuchElementException(Model model,
                                               NoSuchElementException exception,
@@ -142,9 +112,7 @@ public class ProductController {
         return "errors/404";
     }
 
-    /**
-     * Загружает CSRF-токен для формы.
-     */
+
     @ModelAttribute
     public Mono<CsrfToken> loadCsrfToken(ServerWebExchange exchange) {
         return Objects.requireNonNull(exchange.<Mono<CsrfToken>>getAttribute(CsrfToken.class.getName()))

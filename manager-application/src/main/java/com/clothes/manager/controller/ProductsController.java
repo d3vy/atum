@@ -1,7 +1,10 @@
 package com.clothes.manager.controller;
 
+import com.clothes.manager.client.general.CategoriesClient;
 import com.clothes.manager.client.general.ProductsClient;
+import com.clothes.manager.controller.extraFunctions.Functions;
 import com.clothes.manager.controller.payload.NewProductPayload;
+import com.clothes.manager.dto.Category;
 import com.clothes.manager.dto.Product;
 import com.clothes.manager.exception.error.BadRequestException;
 import lombok.RequiredArgsConstructor;
@@ -12,49 +15,68 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-/**
- * Контроллер для управления операциями с продуктами в каталоге.
- */
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("catalogue/products")
 public class ProductsController {
 
     private final ProductsClient productClient;
+    private final CategoriesClient categoriesClient;
+    private final Functions functions;
 
-    /**
-     * Обрабатывает GET-запрос для отображения списка продуктов.
-     *
-     * @param model  Модель для передачи данных в представление.
-     * @param filter Фильтр для поиска продуктов (необязательный параметр).
-     * @return Имя представления для отображения списка продуктов.
-     */
+
+
     @GetMapping("list")
     public String getProductsList(
             Model model,
             @RequestParam(value = "filter", required = false) String filter) {
         model.addAttribute("products", this.productClient.findAllProducts(filter));
         model.addAttribute("filter", filter);
+
         return "catalogue/products/list";
     }
 
-    /**
-     * Обрабатывает GET-запрос для отображения страницы создания нового продукта.
-     *
-     * @return Имя представления для создания нового продукта.
-     */
+//    @GetMapping("list")
+//    public String getProductsList(
+//            Model model,
+//            @RequestParam(value = "filter", required = false) String filter,
+//            @RequestParam(value = "filterCategory", required = false) Integer filterCategory
+//    ) {
+//        List<Category> categories = this.categoriesClient.getAllCategoriesAsTree();
+//
+//        Set<Integer> categoryIdsForFilter = new HashSet<>();
+//
+//        if (filterCategory != null) {
+//            this.functions.collectCategoryAndChildrenIds(categories, filterCategory, categoryIdsForFilter);
+//        }
+//
+//        List<Product> products;
+//        if (!categoryIdsForFilter.isEmpty()) {
+//            products = this.productClient.findAllProductsByFilterAndCategoryIds(filter, categoryIdsForFilter);
+//        } else {
+//            products = this.productClient.findAllProducts(filter, null);
+//        }
+//
+//        model.addAttribute("products", products);
+//        model.addAttribute("categories", categories);
+//        model.addAttribute("filter", filter);
+//        model.addAttribute("filterCategory", filterCategory);
+//
+//        return "catalogue/products/list";
+//    }
+
+
     @GetMapping("create_new_product")
     public String getNewProductPage() {
         return "catalogue/products/create_new_product";
     }
 
-    /**
-     * Обрабатывает POST-запрос для создания нового продукта.
-     *
-     * @param payload Данные нового продукта.
-     * @param model   Модель для передачи данных в представление.
-     * @return Перенаправление на страницу созданного продукта.
-     */
+
     @PostMapping("create_new_product")
     public String createNewProduct(NewProductPayload payload,
                                    Model model) {
@@ -68,4 +90,6 @@ public class ProductsController {
             return "catalogue/products/create_new_product";
         }
     }
+
+
 }

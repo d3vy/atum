@@ -1,7 +1,6 @@
 package com.clothes.manager.controller;
 
 import com.clothes.manager.client.general.CategoryClient;
-import com.clothes.manager.client.payload.CategoryResponse;
 import com.clothes.manager.controller.payload.UpdateCategoryPayload;
 import com.clothes.manager.dto.Category;
 import com.clothes.manager.exception.error.BadRequestException;
@@ -18,7 +17,7 @@ public class CategoryController {
     private final CategoryClient categoryClient;
 
     @ModelAttribute("category")
-    public CategoryResponse category(@PathVariable("categoryId") Integer categoryId) {
+    public Category category(@PathVariable("categoryId") Integer categoryId) {
         return this.categoryClient.findCategoryById(categoryId);
     }
 

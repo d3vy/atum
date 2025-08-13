@@ -1,42 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Product List &ndash; ATUM</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
 <body class="bg-gray-100 p-6">
-<div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-6">
-    <a data-th-href="@{/catalogue/products/create_new_product}" class="text-blue-500 hover:underline">&larr; Create New Product</a>
-    <h1 class="text-2xl font-bold mt-4 mb-6">Product List</h1>
 
-    <form method="get" data-th-action="@{/catalogue/products/list}" class="mb-4 flex gap-2">
-        <label>
-            <input type="text" name="filter" data-th-value="${filter}"
-                   class="border border-gray-300 rounded p-2 w-full" placeholder="Search products...">
-        </label>
-        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Search</button>
-    </form>
+<header class="bg-white shadow p-4 mb-6">
+    <div class="max-w-4xl mx-auto flex justify-between items-center">
+        <h1 class="text-xl font-bold text-gray-800">ATUM Catalogue</h1>
+        <nav class="space-x-6">
+            <a data-th-href="@{/catalogue/categories/list}" class="text-gray-700 hover:text-blue-600">Categories</a>
+            <a data-th-href="@{/catalogue/products/create_new_product}" class="text-blue-500 hover:underline">+ Create Product</a>
+        </nav>
+    </div>
+</header>
 
-    <table class="w-full border-collapse border border-gray-300">
-        <thead>
-        <tr class="bg-gray-200">
-            <th class="border border-gray-300 px-4 py-2">#</th>
-            <th class="border border-gray-300 px-4 py-2">Product</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr data-th-each="product : ${products}" class="odd:bg-white even:bg-gray-100">
-            <td data-th-text="${product.id}" class="border border-gray-300 px-4 py-2 text-center"></td>
-            <td class="border border-gray-300 px-4 py-2">
-                <a data-th-href="@{/catalogue/products/{productId}(productId=${product.id})}"
-                   data-th-text="${product.title}"
-                   class="text-blue-600 hover:underline"></a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+<div class="max-w-4xl mx-auto flex gap-6">
+
+    <aside x-data="{ expandedCategories: [] }" class="w-48 bg-white shadow rounded-lg p-4">
+        <h2 class="text-lg font-semibold mb-4">Categories</h2>
+        <ul class="space-y-2">
+            <li data-th-each="cat : ${categories}">
+                <div>
+                    <a href="#"
+                       data-th-href="@{/catalogue/products/list(filterCategory=${cat.id})}"
+                       data-th-text="${cat.title}"
+                       class="block text-gray-700 hover:text-blue-600 cursor-pointer"
+                       @click.prevent="{
+                         if (!expandedCategories.includes(${cat.id})) {
+                            expandedCategories.push(${cat.id})
+                         } else {
+                            expandedCategories = expandedCategories.filter(i => i !== ${cat.id})
+                         }
+                       }">
+                    </a>
+                </div>
+                <ul data-th-if="${cat.subcategories != null}"
+                    x-show="expandedCategories.includes(${cat.id})"
+                    class="ml-4 border-l border-gray-300 pl-4 mt-1 space-y-1">
+                    <li data-th-each="child : ${cat.subcategories}">
+                        <a data-th-href="@{/catalogue/products/list(filterCategory=${child.id})}"
+                           data-th-text="${child.title}"
+                           class="block text-gray-600 hover:text-blue-500 cursor-pointer"></a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </aside>
+
+    <div class="flex-1 bg-white shadow-lg rounded-lg p-6">
+        <h1 class="text-2xl font-bold mt-0 mb-6">Product List</h1>
+
+        <form method="get" data-th-action="@{/catalogue/products/list}" class="mb-4 flex gap-2">
+            <label class="flex-grow">
+                <input type="text" name="filter" data-th-value="${filter}"
+                       class="border border-gray-300 rounded p-2 w-full" placeholder="Search products...">
+            </label>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Search</button>
+        </form>
+
+        <table class="w-full border-collapse border border-gray-300">
+            <thead>
+            <tr class="bg-gray-200">
+                <th class="border border-gray-300 px-4 py-2">#</th>
+                <th class="border border-gray-300 px-4 py-2">Product</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-th-each="product : ${products}" class="odd:bg-white even:bg-gray-100">
+                <td data-th-text="${product.id}" class="border border-gray-300 px-4 py-2 text-center"></td>
+                <td class="border border-gray-300 px-4 py-2">
+                    <a data-th-href="@{/catalogue/products/{productId}(productId=${product.id})}"
+                       data-th-text="${product.title}"
+                       class="text-blue-600 hover:underline"></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
+
 </body>
 </html>

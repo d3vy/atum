@@ -29,7 +29,7 @@ spring:
         registration:
           keycloak:
             clientId: manager-application
-            clientSecret: ${MANAGER_APPLICATION_CLIENT_SECRET}
+            clientSecret: jlimO5DTqWPZgtN3eNRSALgEHWXBMTcx
             scope:
               - openid
               - microprofile-jwt
@@ -39,7 +39,7 @@ spring:
             provider: keycloak
             authorizationGrantType: client_credentials
             clientId: manager-application-metrics-client
-            clientSecret: ${MANAGER_APPLICATION_METRICS_CLIENT_SECRET}
+            clientSecret: dSSmH2Pa0VaiBEwl6p3um6JjsGHjchoC
             scope:
               - metrics_server
       resourceserver:
@@ -49,7 +49,7 @@ spring:
   datasource:
     url: jdbc:postgresql://catalogue-db:5432/products_catalogue_database
     username: postgres
-    password: ${MANAGER_APPLICATION_DB_PASSWORD}
+    password: "!rT8v^Q2m#L5z@J9p*X3w&hF7"
 
   flyway:
     schemas:

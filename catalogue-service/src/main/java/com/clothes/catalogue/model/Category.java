@@ -30,13 +30,11 @@ public class Category {
     @Column(nullable = false)
     private String title;
 
-    // Родительская категория (nullable, так как у корневых категорий нет родителя)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
-    @JsonIgnore // Чтобы избежать рекурсии при JSON-сериализации
+    @JsonIgnore
     private Category parent;
 
-    // Дочерние категории
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Category> subcategories;
 

@@ -23,21 +23,11 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepo
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 
-/**
- * Конфигурационный класс для создания бинов клиентов продуктов.
- */
+
 @Configuration
 public class ClientBeans {
 
-    /**
-     * Создает бин ProductsClientImpl для взаимодействия с сервисом каталога продуктов.
-     *
-     * @param catalogueBaseUri                Базовый URI сервиса каталога продуктов.
-     * @param registrationId                  Идентификатор регистрации клиента OAuth2.
-     * @param clientRegistrationRepository    Репозиторий регистраций клиентов.
-     * @param auth2AuthorizedClientRepository Репозиторий авторизованных клиентов OAuth2.
-     * @return Экземпляр ProductsClientImpl.
-     */
+
     @Bean
     public ProductsClientImpl productsClient(
             @Value("${catalogue.service.base.uri:http://catalogue-service:8080}") String catalogueBaseUri,
@@ -56,15 +46,7 @@ public class ClientBeans {
                 .build());
     }
 
-    /**
-     * Создает бин ProductClientImpl для взаимодействия с сервисом каталога продуктов.
-     *
-     * @param catalogueBaseUri                Базовый URI сервиса каталога продуктов.
-     * @param registrationId                  Идентификатор регистрации клиента OAuth2.
-     * @param clientRegistrationRepository    Репозиторий регистраций клиентов.
-     * @param auth2AuthorizedClientRepository Репозиторий авторизованных клиентов OAuth2.
-     * @return Экземпляр ProductClientImpl.
-     */
+
     @Bean
     public ProductClientImpl productClient(
             @Value("${catalogue.service.base.uri:http://catalogue-service:8080}") String catalogueBaseUri,

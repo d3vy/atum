@@ -32,7 +32,7 @@ class ProductsControllerTest {
         var payload = new NewProductPayload("Iphone 16", "Cool thing");
         var model = new ConcurrentModel();
 
-        Mockito.doReturn(new Product(1, "Iphone 16", "Cool thing"))
+        Mockito.doReturn(new Product(1, "Iphone 16", "Cool thing", null))
                 .when(productsClient)
                 .createProduct("Iphone 16", "Cool thing");
 

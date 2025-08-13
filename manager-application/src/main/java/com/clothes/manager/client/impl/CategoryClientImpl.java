@@ -1,7 +1,6 @@
 package com.clothes.manager.client.impl;
 
 import com.clothes.manager.client.general.CategoryClient;
-import com.clothes.manager.client.payload.CategoryResponse;
 import com.clothes.manager.controller.payload.UpdateCategoryPayload;
 import com.clothes.manager.dto.Category;
 import lombok.RequiredArgsConstructor;
@@ -16,13 +15,13 @@ public class CategoryClientImpl implements CategoryClient {
     private final RestClient restClient;
 
     @Override
-    public CategoryResponse findCategoryById(Integer categoryId) {
+    public Category findCategoryById(Integer categoryId) {
         log.info("Find category by id {}", categoryId);
         return this.restClient
                 .get()
                 .uri("/api/v1/catalogue/categories/{categoryId}", categoryId)
                 .retrieve()
-                .body(CategoryResponse.class);
+                .body(Category.class);
     }
 
     @Override

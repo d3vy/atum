@@ -1,13 +1,11 @@
 package com.clothes.manager.client.general;
 
-import com.clothes.manager.client.payload.CategoryResponse;
-import com.clothes.manager.dto.Category;
 
-import java.util.List;
+import com.clothes.manager.dto.Category;
 
 public interface CategoryClient {
 
-    CategoryResponse findCategoryById(Integer categoryId);
+    Category findCategoryById(Integer categoryId);
 
     void updateCategory(Integer categoryId, String title);
 

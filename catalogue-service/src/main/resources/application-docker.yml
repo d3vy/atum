@@ -1,6 +1,6 @@
 server:
   port: 8080
-
+  
 logging:
   level:
     sql: info
@@ -18,6 +18,13 @@ spring:
           service-host-type: ip
         url: http://admin-server:8085
 
+  config:
+    import: optional:configserver:instead
+
+  cloud:
+    config:
+      enabled: false
+
   security:
     oauth2:
       client:
@@ -28,7 +35,7 @@ spring:
           keycloak:
             authorizationGrantType: client_credentials
             client-id: catalogue-service-metrics-client
-            client-secret: ${CATALOGUE_SERVICE_CLIENT_SECRET}
+            client-secret: 8BNBdbMHXrCzMVQ41kOAbAM23JhnlPjv
             scope:
               - metrics_server
 
@@ -39,7 +46,7 @@ spring:
   datasource:
     url: jdbc:postgresql://catalogue-db:5432/products_catalogue_database
     username: postgres
-    password: ${CATALOGUE_SERVICE_DB_PASSWORD}
+    password: "!rT8v^Q2m#L5z@J9p*X3w&hF7"
 
   flyway:
     enabled: true

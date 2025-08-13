@@ -5,15 +5,18 @@ services:
   keycloak:
     image: quay.io/keycloak/keycloak:25.0.2
     environment:
-      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
-      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+
     env_file:
       - .env
     volumes:
       - './config/keycloak/import:/opt/keycloak/data/import'
     ports:
       - '8082:8080'
-    command: start-dev --import-realm
+    command:
+      - start-dev
+      - --import-realm
     networks:
       - atum-network
 
@@ -33,12 +36,12 @@ services:
     image: postgres:16
     ports:
       - '5433:5432'
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
     env_file:
       - .env
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "!rT8v^Q2m#L5z@J9p*X3w&hF7"
+      POSTGRES_DB: products_catalogue_database
     networks:
       - atum-network
 
@@ -52,7 +55,6 @@ services:
       - atum-network
 
   admin-server:
-    restart: always
     build:
       context: .
       dockerfile: Dockerfile
@@ -60,7 +62,7 @@ services:
         JAR_FILE: admin-server/target/admin-server-25.1.1-SNAPSHOT-exec.jar
     environment:
       SPRING_PROFILES_ACTIVE: docker
-      ADMIN_SERVER_CLIENT_SECRET: ${ADMIN_SERVER_CLIENT_SECRET}
+      ADMIN_SERVER_CLIENT_SECRET: Xh6RPIBbr4bGiVkdtDFhIoSmxCob1XrD
     env_file:
       - .env
     ports:
@@ -71,7 +73,6 @@ services:
       - atum-network
 
   catalogue-service:
-    restart: always
     build:
       context: .
       dockerfile: Dockerfile
@@ -79,10 +80,12 @@ services:
         JAR_FILE: catalogue-service/target/catalogue-service-25.1.1-SNAPSHOT-exec.jar
     environment:
       SPRING_PROFILES_ACTIVE: docker
-      CATALOGUE_SERVICE_CLIENT_SECRET: ${CATALOGUE_SERVICE_CLIENT_SECRET}
-      CATALOGUE_SERVICE_DB_PASSWORD: ${CATALOGUE_SERVICE_DB_PASSWORD}
+      CATALOGUE_SERVICE_CLIENT_SECRET: u34hkHPpwGWwx29mYcVr6g2BgySEQGts
+      CATALOGUE_SERVICE_DB_PASSWORD: "!rT8v^Q2m#L5z@J9p*X3w&hF7"
     env_file:
       - .env
+    ports:
+      - '8080:8080'
     depends_on:
       - catalogue-db
       - keycloak
@@ -90,7 +93,6 @@ services:
       - atum-network
 
   feedback-service:
-    restart: always
     build:
       context: .
       dockerfile: Dockerfile
@@ -98,9 +100,11 @@ services:
         JAR_FILE: feedback-service/target/feedback-service-25.1.1-SNAPSHOT-exec.jar
     environment:
       SPRING_PROFILES_ACTIVE: docker
-      FEEDBACK_SERVICE_CLIENT_SECRET: ${FEEDBACK_SERVICE_CLIENT_SECRET}
+      FEEDBACK_SERVICE_CLIENT_SECRET: 2s0iVksCTI7VvYJBZo2Y4aHiuvtCgJFx
     env_file:
       - .env
+    ports:
+      - '8083:8083'
     depends_on:
       - feedback-db
       - keycloak
@@ -108,7 +112,6 @@ services:
       - atum-network
 
   customer-application:
-    restart: always
     build:
       context: .
       dockerfile: Dockerfile
@@ -116,17 +119,18 @@ services:
         JAR_FILE: customer-application/target/customer-application-25.1.1-SNAPSHOT-exec.jar
     environment:
       SPRING_PROFILES_ACTIVE: docker
-      CUSTOMER_APPLICATION_CLIENT_SECRET: ${CUSTOMER_APPLICATION_CLIENT_SECRET}
-      CUSTOMER_APPLICATION_METRICS_CLIENT_SECRET: ${CUSTOMER_APPLICATION_METRICS_CLIENT_SECRET}
+      CUSTOMER_APPLICATION_CLIENT_SECRET: 1gaU2P582s1NSl0SRNAtYeDX6ZB9nDvO
+      CUSTOMER_APPLICATION_METRICS_CLIENT_SECRET: jrGLZAkIEUn5zv5c2IiHl987pbwmZzpd
     env_file:
       - .env
+    ports:
+      - '8084:8084'
     depends_on:
       - feedback-service
     networks:
       - atum-network
 
   manager-application:
-    restart: always
     build:
       context: .
       dockerfile: Dockerfile
@@ -134,11 +138,13 @@ services:
         JAR_FILE: manager-application/target/manager-application-25.1.1-SNAPSHOT-exec.jar
     environment:
       SPRING_PROFILES_ACTIVE: docker
-      MANAGER_APPLICATION_CLIENT_SECRET: ${MANAGER_APPLICATION_CLIENT_SECRET}
-      MANAGER_APPLICATION_METRICS_CLIENT_SECRET: ${MANAGER_APPLICATION_METRICS_CLIENT_SECRET}
-      MANAGER_APPLICATION_DB_PASSWORD: ${MANAGER_APPLICATION_DB_PASSWORD}
+      MANAGER_APPLICATION_CLIENT_SECRET: EyPPKE2KC0WTFmLUby2ruW5UCLloZC8d
+      MANAGER_APPLICATION_METRICS_CLIENT_SECRET: iYMiAQyonRMMBIv5UEpLBvbYDJyHSpHg
+      MANAGER_APPLICATION_DB_PASSWORD: "!rT8v^Q2m#L5z@J9p*X3w&hF7"
     env_file:
       - .env
+    ports:
+      - '8081:8081'
     depends_on:
       - catalogue-service
     networks:

@@ -11,11 +11,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("api/v1/catalogue/categories")
 public class CategoriesRestController {
 
     private final CategoriesService categoriesService;
+
+    public CategoriesRestController(CategoriesService categoriesService) {
+        this.categoriesService = categoriesService;
+    }
 
     @PostMapping
     public ResponseEntity<CategoryResponse> createCategory(@Valid @RequestBody NewCategoryPayload payload) {

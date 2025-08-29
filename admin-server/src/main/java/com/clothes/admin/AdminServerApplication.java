@@ -9,8 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @EnableAdminServer
 public class AdminServerApplication {
     public static void main(String[] args) {
-        SpringApplication app = new SpringApplication(AdminServerApplication.class);
-        app.setAdditionalProfiles("standalone");
-        app.run(args);
+        SpringApplication.run(AdminServerApplication.class, args);
     }
 }

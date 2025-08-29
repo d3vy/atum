@@ -10,10 +10,6 @@ import lombok.*;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @ToString(exclude = "subcategories")
 @EqualsAndHashCode(of = "id")
 @Table(schema = "catalogue", name = "categories")
@@ -38,4 +34,45 @@ public class Category {
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Category> subcategories;
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setParent(Category parent) {
+        this.parent = parent;
+    }
+
+    public void setSubcategories(List<Category> subcategories) {
+        this.subcategories = subcategories;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Category getParent() {
+        return parent;
+    }
+
+    public List<Category> getSubcategories() {
+        return subcategories;
+    }
+
+    public Category(Integer id, String title, Category parent, List<Category> subcategories) {
+        this.id = id;
+        this.title = title;
+        this.parent = parent;
+        this.subcategories = subcategories;
+    }
+
+    public Category() {
+    }
 }

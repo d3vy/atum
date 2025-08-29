@@ -30,6 +30,7 @@ spring:
           keycloak:
             clientId: manager-application
             clientSecret: jlimO5DTqWPZgtN3eNRSALgEHWXBMTcx
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             scope:
               - openid
               - microprofile-jwt

@@ -1,7 +1,10 @@
 package com.clothes.catalogue.exception.handling.controllers;
 
+import com.clothes.catalogue.service.impl.ProductsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -16,13 +19,17 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 
-@Slf4j
 @ControllerAdvice
-@RequiredArgsConstructor
 public class GlobalRequestControllerAdvice {
 
     private final MessageSource messageSource;
 
+    public GlobalRequestControllerAdvice(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
+
+    private static final Logger log = LoggerFactory.getLogger(
+            GlobalRequestControllerAdvice.class);
 
     @ExceptionHandler(BindException.class)
     public ResponseEntity<ProblemDetail> handleBindException(BindException exception, Locale locale) {

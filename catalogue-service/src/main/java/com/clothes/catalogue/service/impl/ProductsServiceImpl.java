@@ -5,15 +5,22 @@ import com.clothes.catalogue.repository.ProductRepository;
 import com.clothes.catalogue.service.general.ProductsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 
-@Slf4j
 @Service
-@RequiredArgsConstructor
 public class ProductsServiceImpl implements ProductsService {
 
     private final ProductRepository productRepository;
+
+    public ProductsServiceImpl(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+
+    private static final Logger log = LoggerFactory.getLogger(
+            ProductsServiceImpl.class);
 
 
     @Override

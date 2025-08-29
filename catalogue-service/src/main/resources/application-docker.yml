@@ -36,6 +36,7 @@ spring:
             authorizationGrantType: client_credentials
             client-id: catalogue-service-metrics-client
             client-secret: 8BNBdbMHXrCzMVQ41kOAbAM23JhnlPjv
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             scope:
               - metrics_server
 

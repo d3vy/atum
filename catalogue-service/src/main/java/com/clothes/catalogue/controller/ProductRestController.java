@@ -13,12 +13,16 @@ import java.util.NoSuchElementException;
 
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("api/v1/catalogue/products/{productId:\\d+}")
 public class ProductRestController {
 
     private final ProductService productService;
     private final CategoryService categoryService;
+
+    public ProductRestController(ProductService productService, CategoryService categoryService) {
+        this.productService = productService;
+        this.categoryService = categoryService;
+    }
 
 
     @GetMapping

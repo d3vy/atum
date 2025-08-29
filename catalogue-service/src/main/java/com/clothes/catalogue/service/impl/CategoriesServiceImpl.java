@@ -15,11 +15,14 @@ import java.util.stream.Collectors;
 
 
 @Service
-@RequiredArgsConstructor
 @Transactional
 public class CategoriesServiceImpl implements CategoriesService {
 
     private final CategoryRepository categoryRepository;
+
+    public CategoriesServiceImpl(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
 
     @Override
     public CategoryResponse createCategory(NewCategoryPayload payload) {

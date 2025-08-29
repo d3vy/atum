@@ -22,11 +22,14 @@ import java.util.Map;
 
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("api/v1/catalogue/products")
 public class ProductsRestController {
 
     private final ProductsService productsService;
+
+    public ProductsRestController(ProductsService productsService) {
+        this.productsService = productsService;
+    }
 
 
     @GetMapping

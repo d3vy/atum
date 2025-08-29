@@ -9,11 +9,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("api/v1/catalogue/categories/{categoryId}")
 public class CategoryRestController {
 
     private final CategoryService categoryService;
+
+    public CategoryRestController(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
 
     @GetMapping
     public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable Integer categoryId) {
@@ -32,4 +35,5 @@ public class CategoryRestController {
         categoryService.deleteCategory(categoryId);
         return ResponseEntity.noContent().build();
     }
+
 }

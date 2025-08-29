@@ -1,6 +1,9 @@
 package com.clothes.catalogue.config;
 
+import com.clothes.catalogue.service.impl.ProductsServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -11,8 +14,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-@Slf4j
 public class SecurityBeans {
+
+    private static final Logger log = LoggerFactory.getLogger(
+            SecurityBeans.class);
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

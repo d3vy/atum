@@ -9,10 +9,13 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 
-@RequiredArgsConstructor
 public class ProductReviewsClientImpl implements ProductReviewsClient {
 
     private final WebClient webClient;
+
+    public ProductReviewsClientImpl(WebClient webClient) {
+        this.webClient = webClient;
+    }
 
     @Override
     public Flux<ProductReview> findProductReviewsByProductId(Integer productId) {

@@ -8,6 +8,8 @@ import com.clothes.customer.client.payload.NewProductReviewPayload;
 import com.clothes.customer.model.Product;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.web.reactive.result.view.CsrfRequestDataValueProcessor;
@@ -21,15 +23,22 @@ import reactor.core.publisher.Mono;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-@Slf4j
 @Controller
-@RequiredArgsConstructor
 @RequestMapping("customer/products/{productId:\\d+}")
 public class ProductController {
 
     private final ProductsClient productsClient;
     private final FavoriteProductsClient favoriteProductsClient;
     private final ProductReviewsClient productReviewsClient;
+
+    public ProductController(ProductsClient productsClient, FavoriteProductsClient favoriteProductsClient, ProductReviewsClient productReviewsClient) {
+        this.productsClient = productsClient;
+        this.favoriteProductsClient = favoriteProductsClient;
+        this.productReviewsClient = productReviewsClient;
+    }
+
+    private static final Logger log = LoggerFactory.getLogger(
+            ProductController.class);
 
 
     @ModelAttribute(value = "product", binding = false)

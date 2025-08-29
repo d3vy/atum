@@ -5,6 +5,8 @@ import com.clothes.manager.controller.payload.NewProductPayload;
 import com.clothes.manager.dto.Product;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClient;
@@ -13,11 +15,16 @@ import java.util.List;
 import java.util.Set;
 
 
-@Slf4j
-@RequiredArgsConstructor
 public class ProductsClientImpl implements ProductsClient {
 
     private final RestClient restClient;
+
+    public ProductsClientImpl(RestClient restClient) {
+        this.restClient = restClient;
+    }
+
+    private static final Logger log = LoggerFactory.getLogger(
+            ProductsClientImpl.class);
 
 
     @Override

@@ -17,11 +17,14 @@ import reactor.core.publisher.Mono;
 import java.util.Map;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("api/v1/product-reviews")
 public class ProductReviewsController {
 
     private final ProductReviewsService productReviewsService;
+
+    public ProductReviewsController(ProductReviewsService productReviewsService) {
+        this.productReviewsService = productReviewsService;
+    }
 
     @GetMapping("by-product-id/{productId:\\d+}")
     @Operation(

@@ -12,11 +12,14 @@ import java.util.Locale;
 import java.util.NoSuchElementException;
 
 
-@RequiredArgsConstructor
 @ControllerAdvice
 public class GlobalControllerAdvice {
 
     private final MessageSource messageSource;
+
+    public GlobalControllerAdvice(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
 
 
     @ExceptionHandler(NoSuchElementException.class)

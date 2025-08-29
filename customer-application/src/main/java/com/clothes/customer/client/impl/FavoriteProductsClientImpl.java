@@ -5,17 +5,26 @@ import com.clothes.customer.client.payload.NewFavoriteProductPayload;
 import com.clothes.customer.model.FavoriteProduct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-@Slf4j
-@RequiredArgsConstructor
+
 public class FavoriteProductsClientImpl implements FavoriteProductsClient {
 
     private final WebClient webClient;
+
+    public FavoriteProductsClientImpl(WebClient webClient) {
+        this.webClient = webClient;
+    }
+
+    private static final Logger log = LoggerFactory.getLogger(
+            FavoriteProductsClientImpl.class);
+
 
     @Override
     public Flux<FavoriteProduct> findAllFavoriteProducts() {

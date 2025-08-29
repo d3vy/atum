@@ -11,10 +11,13 @@ import reactor.core.publisher.Mono;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 public class ProductReviewsServiceImpl implements ProductReviewsService {
 
     private final ProductReviewsRepository productReviewsRepository;
+
+    public ProductReviewsServiceImpl(ProductReviewsRepository productReviewsRepository) {
+        this.productReviewsRepository = productReviewsRepository;
+    }
 
     @Override
     public Mono<ProductReview> createProductReview(String userId, Integer productId,

@@ -9,11 +9,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequiredArgsConstructor
 @RequestMapping("catalogue/categories")
 public class CategoriesController {
 
     private final CategoriesClient categoriesClient;
+
+    public CategoriesController(CategoriesClient categoriesClient) {
+        this.categoriesClient = categoriesClient;
+    }
 
     @GetMapping("list")
     public String getAllCategories(

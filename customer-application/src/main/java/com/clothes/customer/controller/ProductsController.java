@@ -12,12 +12,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import reactor.core.publisher.Mono;
 
 @Controller
-@RequiredArgsConstructor
 @RequestMapping("customer/products")
 public class ProductsController {
 
     private final ProductsClient productClient;
     private final FavoriteProductsClient favoriteProductsClient;
+
+    public ProductsController(ProductsClient productClient, FavoriteProductsClient favoriteProductsClient) {
+        this.productClient = productClient;
+        this.favoriteProductsClient = favoriteProductsClient;
+    }
 
     @GetMapping("list")
     public Mono<String> getProductsListPage(

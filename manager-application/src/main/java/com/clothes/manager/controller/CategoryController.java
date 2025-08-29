@@ -10,11 +10,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequiredArgsConstructor
 @RequestMapping("catalogue/categories/{categoryId:\\d+}")
 public class CategoryController {
 
     private final CategoryClient categoryClient;
+
+    public CategoryController(CategoryClient categoryClient) {
+        this.categoryClient = categoryClient;
+    }
 
     @ModelAttribute("category")
     public Category category(@PathVariable("categoryId") Integer categoryId) {

@@ -7,19 +7,28 @@ import com.clothes.manager.dto.Product;
 import com.clothes.manager.exception.error.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
 @Controller
-@RequiredArgsConstructor
 @RequestMapping("catalogue/products/{productId:\\d+}")
-@Slf4j
 public class ProductController {
 
     private final ProductClient productClient;
     private final CategoriesClient categoriesClient;
+
+    public ProductController(ProductClient productClient, CategoriesClient categoriesClient) {
+        this.productClient = productClient;
+        this.categoriesClient = categoriesClient;
+    }
+
+    private static final Logger log = LoggerFactory.getLogger(
+            ProductController.class);
+
 
 
     @ModelAttribute("product")

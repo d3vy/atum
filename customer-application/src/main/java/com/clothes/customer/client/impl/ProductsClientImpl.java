@@ -8,10 +8,13 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-@RequiredArgsConstructor
 public class ProductsClientImpl implements ProductsClient {
 
     private final WebClient webClient;
+
+    public ProductsClientImpl(WebClient webClient) {
+        this.webClient = webClient;
+    }
 
     @Override
     public Flux<Product> findAllProducts(String filter) {

@@ -15,11 +15,14 @@ import reactor.core.publisher.Mono;
 import java.util.Map;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("api/v1/favorite-products")
 public class FavoriteProductsController {
 
     private final FavoriteProductsService favoriteProductsService;
+
+    public FavoriteProductsController(FavoriteProductsService favoriteProductsService) {
+        this.favoriteProductsService = favoriteProductsService;
+    }
 
     @GetMapping
     public Flux<FavoriteProduct> findFavoriteAllFavoriteProducts(

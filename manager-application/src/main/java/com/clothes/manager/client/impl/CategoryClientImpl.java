@@ -5,14 +5,23 @@ import com.clothes.manager.controller.payload.UpdateCategoryPayload;
 import com.clothes.manager.dto.Category;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClient;
 
-@Slf4j
-@RequiredArgsConstructor
+
 public class CategoryClientImpl implements CategoryClient {
 
     private final RestClient restClient;
+
+    public CategoryClientImpl(RestClient restClient) {
+        this.restClient = restClient;
+    }
+
+    private static final Logger log = LoggerFactory.getLogger(
+            CategoryClientImpl.class);
+
 
     @Override
     public Category findCategoryById(Integer categoryId) {

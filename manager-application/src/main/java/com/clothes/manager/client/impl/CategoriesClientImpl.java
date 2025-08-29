@@ -15,10 +15,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 
-@RequiredArgsConstructor
 public class CategoriesClientImpl implements CategoriesClient {
 
     private final RestClient restClient;
+
+    public CategoriesClientImpl(RestClient restClient) {
+        this.restClient = restClient;
+    }
 
     @Override
     public Category createCategory(NewCategoryPayload payload) {

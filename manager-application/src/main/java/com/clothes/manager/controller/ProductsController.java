@@ -21,7 +21,6 @@ import java.util.Set;
 
 
 @Controller
-@RequiredArgsConstructor
 @RequestMapping("catalogue/products")
 public class ProductsController {
 
@@ -29,6 +28,11 @@ public class ProductsController {
     private final CategoriesClient categoriesClient;
     private final Functions functions;
 
+    public ProductsController(ProductsClient productClient, CategoriesClient categoriesClient, Functions functions) {
+        this.productClient = productClient;
+        this.categoriesClient = categoriesClient;
+        this.functions = functions;
+    }
 
 
     @GetMapping("list")

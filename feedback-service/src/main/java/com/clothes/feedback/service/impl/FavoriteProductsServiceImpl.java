@@ -11,10 +11,13 @@ import reactor.core.publisher.Mono;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 public class FavoriteProductsServiceImpl implements FavoriteProductsService {
 
     private final FavoriteProductsRepository favoriteProductsRepository;
+
+    public FavoriteProductsServiceImpl(FavoriteProductsRepository favoriteProductsRepository) {
+        this.favoriteProductsRepository = favoriteProductsRepository;
+    }
 
     @Override
     public Mono<FavoriteProduct> addProductToFavorites(Integer productId, String userId) {
